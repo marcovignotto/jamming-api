@@ -12,6 +12,11 @@ import { UsersModule } from './users/users.module';
 import { JamsModule } from './jams/jams.module';
 
 // env variables (development, production, testing)
+
+const getEnv = async () => {
+  return await process.env.NODE_ENV;
+};
+
 const ENV = process.env.NODE_ENV;
 
 @Module({
@@ -23,11 +28,13 @@ const ENV = process.env.NODE_ENV;
     }),
     // MongooseModule.forRoot(process.env.MONGODB_URI),
     // ! Clean
+    // MongooseModule.forRoot('mongodb://localhost/jamming'),
     MongooseModule.forRootAsync({
       // imports: [ConfigModule],
       useFactory: async () => ({
         // uri: configService.get<string>('MONGODB_URI'),
         uri: process.env.MONGODB_URI,
+        // uri: 'mongodb://localhost/jamming',
       }),
       // inject: [ConfigService],
     }),

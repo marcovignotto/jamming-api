@@ -1,6 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
+
+import * as bcrypt from 'bcrypt';
+
+import * as crypto from 'crypto';
+
+// mongo
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
+// models
+import { UserSchema } from '../schemas/user.schema';
 
 // interfaces
+import {
+  CreateUserInterface,
+  PromiseCreateUserInterface,
+  IUser,
+} from '../interfaces/createUser.interface';
 
 export interface PostUserResponse {
   firstName: string;
@@ -27,6 +43,8 @@ export interface DeleteUserResponse {
 
 @Injectable()
 export class UsersService {
+  constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
+
   public getAllUsers(): string[] {
     return [];
   }
@@ -37,25 +55,42 @@ export class UsersService {
    * @returns obj witrh the created user
    */
 
-  public postUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    instruments: string[],
-    role: string,
-  ): PostUserResponse {
-    const objToReturn = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      userCode: '009',
-      instruments: instruments,
-      role: role,
-    };
+  async postUser(
+    obj: CreateUserInterface,
+  ): Promise<PromiseCreateUserInterface> {
+    // destruc
+    const { email, password } = obj;
 
-    return objToReturn;
+    try {
+      // check if email is already in use
+      const signupEmail = await this.userModel.findOne({ email });
+
+      if (signupEmail) {
+        throw new HttpException('Email already registered!', 409);
+      }
+      // generate salt
+      const salt = await bcrypt.genSalt(10);
+
+      // generate Password
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      // generate accountCode
+      const generatedAccountCode = crypto.randomBytes(6).toString('hex');
+
+      // create the new obj to save
+
+      const userToSave = await new this.userModel({
+        ...obj,
+        password: hashedPassword,
+        userCode: generatedAccountCode,
+      });
+      const savedDocument = await userToSave.save();
+
+      return savedDocument;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(`${error}`, 400);
+    }
   }
 
   /**
