@@ -60,6 +60,9 @@ const userNeilYoung = {
   role: 'user',
 };
 
+export const tokenNeilYoung = () =>
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk4MDQsImV4cCI6MTY0NTEyMzgwNH0.XMSLqEMZa6HivlwnKpLWDb3tjsoY0a8-Kl4wqmigwLc';
+
 export const credentialNeilYoung = (): object => {
   return userNeilYoung;
 };
@@ -73,6 +76,9 @@ const userJoniMitchell = {
   instrument: 'Voice',
   role: 'user',
 };
+
+export const tokenJoniMitchell = () =>
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvbmltaXRjaGVsQGdtYWlsLmNvbSIsImlhdCI6MTYzOTkzOTc2MSwiZXhwIjoxNjQ1MTIzNzYxfQ.KKbnnAfq-W3C_sRtjItrw7qzAjlIAUpE7_eueg3mZII';
 
 export const credentialJoniMitchell = (): object => {
   return userJoniMitchell;
@@ -88,6 +94,9 @@ const userJohnColtrane = {
   role: 'user',
 };
 
+export const tokenJohnColtrane = () =>
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5jb2x0cmFuZUBnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk2OTQsImV4cCI6MTY0NTEyMzY5NH0.6rvzpO6Pc7JWHi8L0lvDkhPbF_AtVmtYFGZ3s2aQe7I';
+
 export const credentialJohnColtrane = (): object => {
   return userJohnColtrane;
 };
@@ -101,6 +110,9 @@ const userYokoOno = {
   instrument: 'Voice',
   role: 'user',
 };
+
+export const tokenYokoOno = () =>
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg';
 
 export const credentialYokoOno = (): object => {
   return userYokoOno;

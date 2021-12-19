@@ -59,10 +59,10 @@ export class UsersService {
   public async postUser(
     obj: CreateUserInterface,
   ): Promise<PromiseCreateUserInterface> {
-    // destruc
-    const { email, password } = obj;
-
     try {
+      // destruc
+      const { email, password } = obj;
+
       // check if email is already in use
       const signupEmail = await this.userModel.findOne({ email });
 

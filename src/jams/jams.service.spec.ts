@@ -31,7 +31,7 @@ const testDeleteJamString = 'Jam number 9 deleted!';
 
 // class to mock functions
 class JamsServiceMock {
-  getAllJams(): object[] {
+  getAllJams(all, body): object[] {
     return testGetAllJamsArray;
   }
   postJam(obj: object | any): object {
@@ -73,7 +73,7 @@ describe.skip('JamsService', () => {
   it('getAllJams() > array of 3 objs', () => {
     const expectedResult = testGetAllJamsArray;
 
-    const res = service.getAllJams();
+    const res = service.getAllJams(true, { body: 'foo' });
 
     expect(res).toBe(expectedResult);
   });

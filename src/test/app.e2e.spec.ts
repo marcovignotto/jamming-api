@@ -14,6 +14,10 @@ import {
   credentialNeilYoung,
   credentialYokoOno,
   tokenBodDylan,
+  tokenNeilYoung,
+  tokenJohnColtrane,
+  tokenJoniMitchell,
+  tokenYokoOno,
 } from './utils/testCredentials';
 
 import apiVersion from '../../config/apiVersion';
@@ -146,12 +150,13 @@ describe('AppController (e2e)', () => {
     let token = '';
     // the user tot request the token
     // has to be the one created in the previous test
+
     const userRequestToken = {
       email: objPostUser['email'],
       password: objPostUser['password'],
     };
 
-    it('POST > 200  and token', async () => {
+    it('POST > 200 and token', async () => {
       const req = await request(app.getHttpServer())
         .post(PATH_AUTH + '/login')
         .send(userRequestToken)
@@ -166,9 +171,11 @@ describe('AppController (e2e)', () => {
 
       // save toke for next test
       token = req.access_token;
+
+      console.log('TOEKN', token);
     });
 
-    it('GET > 200 and user data ', async () => {
+    it.skip('GET > 200 and user data ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_AUTH)
         .set('Authorization', 'Bearer ' + token)
@@ -223,6 +230,14 @@ describe('AppController (e2e)', () => {
   describe('/jams - GET - POST - PUT - DELETE', () => {
     // to have a simpler authorization some token
     const tokenJamHost = tokenBodDylan();
+    // other players
+    const tokenJamPlayerOne = tokenJoniMitchell();
+    const tokenJamPlayerTwo = tokenNeilYoung();
+    const tokenJamPlayerThree = tokenJohnColtrane();
+    // the too late player
+    const tokenJamPlayerFour = tokenYokoOno();
+
+    let jamToJoinUrl = '';
 
     const testObjJamToCreate = {
       hostEmail: credentialBobDylan()['email'],
@@ -240,6 +255,7 @@ describe('AppController (e2e)', () => {
     it('GET > 200 and all the jams [] length 0 ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
+        .query('all=true')
         .set('Authorization', 'Bearer ' + tokenJamHost)
         .expect(200)
         .then((res) => res.body);
@@ -251,7 +267,7 @@ describe('AppController (e2e)', () => {
     });
 
     // created by bod dylan
-    it('POST > 201 and the created jam', async () => {
+    it.skip('POST > 201 and the created jam', async () => {
       const req = await request(app.getHttpServer())
         .post(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamHost)
@@ -282,7 +298,7 @@ describe('AppController (e2e)', () => {
         testObjJamToCreate['totalNumberOfPlayers'] - 1,
       );
     });
-    it(`POST Error posting twice > 500 "Internal Server Error"`, async () => {
+    it.skip(`POST Error posting twice > 500 "Internal Server Error"`, async () => {
       await request(app.getHttpServer())
         .post(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamHost)
@@ -290,9 +306,10 @@ describe('AppController (e2e)', () => {
         .expect(500);
     });
 
-    it('GET > 200 and all the jams [] length 1 ', async () => {
+    it('GET with query all > 200 and all the jams [] length 1 ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
+        .query('all=true')
         .set('Authorization', 'Bearer ' + tokenJamHost)
         .expect(200)
         .then((res) => res.body);
@@ -302,6 +319,56 @@ describe('AppController (e2e)', () => {
       // use returned values
       expect(Number(req.length)).toBe(1);
     });
+
+    // having just one jam
+    // if the user that created the jam does not have the instrument avaible
+    it('GET without query all > 200 and all JUST the jams avaible for the player [] length 0', async () => {
+      const req = await request(app.getHttpServer())
+        .get(PATH_JAMS)
+        .set('Authorization', 'Bearer ' + tokenJamHost)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(1);
+
+      // use returned values
+      expect(Number(req.length)).toBe(0);
+    });
+
+    // now Joni Mitchel makes request
+    // must return the available jam
+    // joins the jam
+    it('GET without query all > 200 and all JUST the jams avaible for the player [] length 1', async () => {
+      const req = await request(app.getHttpServer())
+        .get(PATH_JAMS)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerOne)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(1);
+
+      jamToJoinUrl = req.jamUrl;
+
+      // use returned values
+      expect(Number(req.length)).toBe(1);
+
+      // new requet to the specific jam i.e. /jams/jamming-with-mr-tamburine
+      // and join with the instrument
+    });
+
+    // now Yoko Ono makes request
+    // but the voice is gone
+    // must NOT return the available jam
+
+    // now Yoko Ono makes request with all
+    // returns 1 jam but not joinable
+
+    // neil young request and join
+
+    // John Coltrane request and join
+
+    // now Yoko Ono makes request
+    // but no jams are available
   });
   afterAll(async () => {
     await app.close();

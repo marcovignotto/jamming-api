@@ -7,16 +7,12 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { Public } from '../decorators/public.decorator';
 
 import { AuthService } from './auth.service';
-
-import { Request as RequestType } from 'express';
-import { LocalAuthGuard } from './guards/local-auth.guard';
-
-// TDO
-import { RequestUserToken, RequestUserData } from '../dto/auth.dto';
 
 import apiVersion from '../../config/apiVersion';
 
@@ -49,6 +45,7 @@ export class AuthController {
 
   // TODO
   // add type request
+  @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {

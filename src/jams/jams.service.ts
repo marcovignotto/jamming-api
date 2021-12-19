@@ -30,10 +30,29 @@ export class JamsService {
    * @desc to get all the jams
    * @returns array of available jam
    */
-  public async getAllJams(): Promise<object[]> {
-    const allJams = await this.jamModel.find();
+  public async getAllJams(all, user): Promise<object[]> {
+    // if true the user request all  the jams
+    // NOT jsut the ones avaible based on the instrument
+    if (all) {
+      const allJams = await this.jamModel.find();
+      return allJams;
+    }
 
-    return allJams;
+    // find host
+    const findPlayer = await this.userModel.findOne({
+      email: user.email,
+    });
+
+    if (!findPlayer) {
+      throw new HttpException(`The user does not exists!`, 401);
+    }
+
+    // find al the jams to filter
+    const avaibleJams = await this.jamModel.find({
+      availableInstruments: findPlayer.instrument,
+    });
+
+    return avaibleJams;
   }
 
   /**
