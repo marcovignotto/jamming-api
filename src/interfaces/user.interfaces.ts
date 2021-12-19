@@ -6,7 +6,7 @@ export interface CreateUserInterface {
   lastName?: string;
   email?: string;
   password?: string;
-  instruments?: string[];
+  instrument?: string;
   role?: string;
 }
 
@@ -17,7 +17,7 @@ export interface PromiseCreateUserInterface {
   lastName: string;
   email: string;
   password: string;
-  instruments: string[];
+  instrument: string;
   role: string;
   userCode?: string;
   _id?: string;
@@ -33,7 +33,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   userCode: string;
-  instruments: string[];
+  instrument: string;
   role: string;
   // createdAt?: Date;
   // currentJam?: Schema.Types.ObjectId;

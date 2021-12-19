@@ -16,7 +16,7 @@ import { Request as RequestType } from 'express';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
 // TDO
-import { RequestUserToken, RequestUserData } from '../dto/auth.tdo';
+import { RequestUserToken, RequestUserData } from '../dto/auth.dto';
 
 import apiVersion from '../../config/apiVersion';
 

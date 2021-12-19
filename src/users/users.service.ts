@@ -8,9 +8,6 @@ import * as crypto from 'crypto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 
-// models
-import { UserSchema } from '../schemas/user.schema';
-
 // interfaces
 import {
   CreateUserInterface,
@@ -18,6 +15,8 @@ import {
   IUser,
 } from '../interfaces/user.interfaces';
 
+//TODO
+// external Interfaces
 export interface PostUserResponse {
   firstName: string;
   lastName: string;

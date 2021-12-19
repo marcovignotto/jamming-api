@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Schema as MongooseSchema } from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
@@ -9,7 +8,7 @@ export const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   userCode: { type: String, required: true },
   // array to have more instruments
-  instruments: { type: Array, required: true },
+  instrument: { type: String, required: true },
   role: { type: String, required: true, default: 'user' },
   createdAt: { type: Date, default: Date.now },
   // referenfe to give the current jam attended b the user

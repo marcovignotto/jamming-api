@@ -8,7 +8,7 @@ const userAdmin = {
   lastName: 'Doe',
   email: 'janedoe@gmail.com',
   password: '12345678',
-  instruments: ['Voice', 'Piano'],
+  instrument: 'Voice',
   role: 'admin',
 };
 
@@ -18,7 +18,7 @@ const userGeneral = {
   lastName: 'Doe',
   email: 'johndoe@gmail.com',
   password: '12345678',
-  instruments: ['Sax', 'Drum'],
+  instrument: 'Drum',
   role: 'user',
 };
 
