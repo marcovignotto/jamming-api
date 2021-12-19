@@ -10,11 +10,16 @@ import {
 import { UsersService } from './users.service';
 
 // DTOs
-import { CreateUserDto } from '../dto/createUser.dto';
+import { CreateUserDto } from '../dto/user.dto';
 
 import { Schema } from 'mongoose';
 
-@Controller('users')
+import apiVersion from '../../config/apiVersion';
+
+// take the API version i.e. /v1
+const API_VERSION = apiVersion();
+
+@Controller(API_VERSION + '/users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 

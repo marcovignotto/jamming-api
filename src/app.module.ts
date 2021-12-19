@@ -19,6 +19,9 @@ const getEnv = async () => {
 
 const ENV = process.env.NODE_ENV;
 
+//TODO
+// create a globconfig for the env
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,6 +30,7 @@ const ENV = process.env.NODE_ENV;
       load: [configEnvVars],
     }),
     // MongooseModule.forRoot(process.env.MONGODB_URI),
+    // TODO
     // ! Clean
     // MongooseModule.forRoot('mongodb://localhost/jamming'),
     MongooseModule.forRootAsync({

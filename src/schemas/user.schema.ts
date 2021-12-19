@@ -10,7 +10,7 @@ export const UserSchema = new mongoose.Schema({
   userCode: { type: String, required: true },
   // array to have more instruments
   instruments: { type: Array, required: true },
-  role: { type: String, required: true, default: 'player' },
+  role: { type: String, required: true, default: 'user' },
   createdAt: { type: Date, default: Date.now },
   // referenfe to give the current jam attended b the user
   currentJam: {

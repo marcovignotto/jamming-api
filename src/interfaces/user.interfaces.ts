@@ -1,6 +1,7 @@
 import { Document, Schema } from 'mongoose';
 
-export class CreateUserInterface {
+// request to create a user
+export interface CreateUserInterface {
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -9,7 +10,9 @@ export class CreateUserInterface {
   role?: string;
 }
 
-export class PromiseCreateUserInterface {
+// user to return the user after creation
+// used to return the user after the get auth request
+export interface PromiseCreateUserInterface {
   firstName: string;
   lastName: string;
   email: string;
@@ -20,8 +23,10 @@ export class PromiseCreateUserInterface {
   _id?: string;
   createdAt?: Date;
   __v?: number;
+  currentJam?: string;
 }
 
+// interace for mongo schema
 export interface IUser extends Document {
   firstName: string;
   lastName: string;

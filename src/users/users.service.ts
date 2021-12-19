@@ -16,7 +16,7 @@ import {
   CreateUserInterface,
   PromiseCreateUserInterface,
   IUser,
-} from '../interfaces/user.interface';
+} from '../interfaces/user.interfaces';
 
 export interface PostUserResponse {
   firstName: string;

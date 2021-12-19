@@ -61,7 +61,7 @@ describe.skip('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forRoot('mongodb://localhost/jamming'),
+        MongooseModule.forRoot('mongodb://localhost/jammingTestDb'),
         // MongooseModule.forRootAsync({
         //   // imports: [ConfigModule],
         //   useFactory: async () => ({
