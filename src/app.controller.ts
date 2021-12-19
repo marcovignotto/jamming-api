@@ -3,7 +3,10 @@ import { ConfigService } from '@nestjs/config';
 
 import { AppService } from './app.service';
 
-@Controller()
+// take the API version i.e. /v1
+const API_VERSION = '/v1';
+
+@Controller(API_VERSION)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

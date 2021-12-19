@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as request from 'supertest';
 import { AppModule } from '../app.module';
 
+// test obj
 const objPostUser = {
   firstName: 'John',
   lastName: 'Doe',
