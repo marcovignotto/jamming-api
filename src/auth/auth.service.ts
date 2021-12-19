@@ -92,9 +92,15 @@ export class AuthService {
    * @desc to get the user data by a token
    * @returns the userdata
    */
-  // TODO
-  public getUserData(token) {
-    return token;
+  public async getUserData(user) {
+    // find user by email and return all info
+    const userFind = await this.userModel.findOne({ email: user.email });
+    // return error if the user does not exist
+    if (!user) {
+      throw new HttpException(`Invalid credentials!`, 401);
+    }
+
+    return userFind;
   }
 
   /**

@@ -36,8 +36,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  public getUserData(@Body() bodyUserData: RequestUserData) {
-    return this.authService.getUserData(bodyUserData);
+  public getUserData(@Request() req) {
+    return this.authService.getUserData(req.user);
   }
 
   /**

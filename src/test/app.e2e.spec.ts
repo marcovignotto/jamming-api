@@ -150,7 +150,6 @@ describe('AppController (e2e)', () => {
     });
 
     it('GET > 200 and user data ', async () => {
-      console.log('token', token);
       const req = await request(app.getHttpServer())
         .get(PATH_AUTH)
         .set('Authorization', 'Bearer ' + token)
@@ -166,7 +165,7 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  afterAll(async () => {
-    await app.close();
-  });
+  // afterAll(async () => {
+  //   await app.close();
+  // });
 });
