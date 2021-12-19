@@ -11,6 +11,12 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JamsModule } from './jams/jams.module';
 
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { SetMetadata } from '@nestjs/common';
+
+// export const IS_PUBLIC_KEY = 'isPublic';
+// export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 // env variables (development, production, testing)
 
 const getEnv = async () => {
@@ -47,6 +53,13 @@ const ENV = process.env.NODE_ENV;
     JamsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // protect all the routes
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

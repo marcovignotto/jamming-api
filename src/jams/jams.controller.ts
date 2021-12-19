@@ -11,6 +11,9 @@ import {
 import apiVersion from '../../config/apiVersion';
 import { JamsService } from './jams.service';
 
+// tdo
+import { CreateJamDto } from '../dto/jam.dto';
+
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
 
@@ -37,8 +40,8 @@ export class JamsController {
    * @return creates a jam
    */
   @Post()
-  public postJam() {
-    return this.jamsService.postJam();
+  public postJam(@Body() createJamDto: CreateJamDto | any) {
+    return this.jamsService.postJam(createJamDto);
   }
 
   /**

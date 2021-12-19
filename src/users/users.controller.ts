@@ -7,6 +7,9 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
+
+import { Public } from '../decorators/public.decorator';
+
 import { UsersService } from './users.service';
 
 // DTOs
@@ -41,6 +44,7 @@ export class UsersController {
    * @public
    * @return creates a user
    */
+  @Public()
   @Post()
   public postUser(@Body() createUserDto: CreateUserDto) {
     return this.usersService.postUser(createUserDto);

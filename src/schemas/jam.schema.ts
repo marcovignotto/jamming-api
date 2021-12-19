@@ -22,6 +22,8 @@ export const JamSchema = new mongoose.Schema({
   joinedInstruments: { type: Array, required: true },
   availableInstruments: { type: Array, required: true },
   totalNumberOfPlayers: { type: Number, required: true },
+  playersLeft: { type: Number, required: true },
+  started: { type: Boolean, required: true, default: false },
   kindOfMusic: { type: String, required: true, default: 'user' },
   startingDate: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
