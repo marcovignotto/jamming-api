@@ -37,7 +37,7 @@ class AuthServiceMock {
     return objToReturn;
   }
 
-  postToGetToken(bodyUserToken: IRequestToken): IResponseRequestToken {
+  postToGetToken(bodyUserToken: IResponseRequestToken): IResponseRequestToken {
     return token;
   }
 }
@@ -68,7 +68,7 @@ describe.skip('AuthService', () => {
   });
 
   it('postToGetToken() > token', async () => {
-    const tokenReq = await service.postToGetToken(objTestUser);
+    const tokenReq = await service.postToGetToken(token);
     expect(tokenReq.token).toBe(token.token);
   });
 });

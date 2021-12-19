@@ -5,10 +5,13 @@ import {
   Get,
   Request,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
+
+import { Request as RequestType } from 'express';
 import { LocalAuthGuard } from './local-auth.guard';
 
 // TDO
@@ -43,9 +46,12 @@ export class AuthController {
    * @return to get a token
    */
 
+  // TODO
+  // add type request
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  public postToGetToken(@Body() bodyUserToken: RequestUserToken) {
-    return this.authService.postToGetToken(bodyUserToken);
+  public postToGetToken(@Request() req) {
+    // take the result of the middleware and forward it
+    return this.authService.postToGetToken(req.user);
   }
 }
