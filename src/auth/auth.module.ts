@@ -9,7 +9,8 @@ import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 // import { UserSchema } from '../entities/user.entity';
 
-import { LocalStrategy } from './local.strategy';
+import { LocalStrategy } from './strategies/local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 // TODO
 // change entries to schema
@@ -33,7 +34,7 @@ const ENV = process.env.NODE_ENV;
       signOptions: { expiresIn: '60d' },
     }),
   ],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

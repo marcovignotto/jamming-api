@@ -8,11 +8,12 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 import { AuthService } from './auth.service';
 
 import { Request as RequestType } from 'express';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LocalAuthGuard } from './guards/local-auth.guard';
 
 // TDO
 import { RequestUserToken, RequestUserData } from '../dto/auth.tdo';
@@ -33,7 +34,7 @@ export class AuthController {
    * @return get user info based with the token
    */
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(JwtAuthGuard)
   @Get()
   public getUserData(@Body() bodyUserData: RequestUserData) {
     return this.authService.getUserData(bodyUserData);
@@ -48,10 +49,9 @@ export class AuthController {
 
   // TODO
   // add type request
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  public postToGetToken(@Request() req) {
-    // take the result of the middleware and forward it
-    return this.authService.postToGetToken(req.user);
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 }

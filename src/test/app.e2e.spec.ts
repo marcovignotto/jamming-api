@@ -143,16 +143,17 @@ describe('AppController (e2e)', () => {
 
       // returned value
 
-      expect(req.token).toBeTruthy();
+      expect(req.access_token).toBeTruthy();
 
       // save toke for next test
-      token = req.token;
+      token = req.access_token;
     });
 
-    it.skip('GET > 200 and user data ', async () => {
+    it('GET > 200 and user data ', async () => {
+      console.log('token', token);
       const req = await request(app.getHttpServer())
         .get(PATH_AUTH)
-        .send(token)
+        .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .then((res) => res.body);
 
@@ -163,5 +164,9 @@ describe('AppController (e2e)', () => {
       expect(req.lastName).toBe(objPostUser['lastName']);
       expect(req.email).toBe(objPostUser['email']);
     });
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });
