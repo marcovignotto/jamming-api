@@ -128,7 +128,7 @@ describe('AppController (e2e)', () => {
     // the user tot request the token
     // has to be the one created in the previous test
     const userRequestToken = {
-      username: objPostUser['email'],
+      email: objPostUser['email'],
       password: objPostUser['password'],
     };
 
