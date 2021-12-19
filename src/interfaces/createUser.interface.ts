@@ -1,12 +1,12 @@
 import { Document, Schema } from 'mongoose';
 
 export class CreateUserInterface {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  instruments: string[];
-  role: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  instruments?: string[];
+  role?: string;
 }
 
 export class PromiseCreateUserInterface {
@@ -16,8 +16,8 @@ export class PromiseCreateUserInterface {
   password: string;
   instruments: string[];
   role: string;
-  userCode: string;
-  _id: string;
+  userCode?: string;
+  _id?: string;
   createdAt?: Date;
   __v?: number;
 }

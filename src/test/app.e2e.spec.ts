@@ -14,6 +14,14 @@ const objPostUser = {
   role: 'player',
 };
 
+const objUpdateUser = {
+  firstName: 'Jane',
+  lastName: 'Doe',
+  email: 'janedoe@gmail.com',
+  instruments: ['Sax', 'Piano'],
+  role: 'admin',
+};
+
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
@@ -32,6 +40,9 @@ describe('AppController (e2e)', () => {
   // general testing errors
 
   describe('/users - GET - POST - PUT - DELETE', () => {
+    // store tne user id for the PUT
+    let userIdToUpdate = '';
+
     // test the empty user db
     it(`GET > [] `, async () => {
       return await request(app.getHttpServer())
@@ -41,12 +52,45 @@ describe('AppController (e2e)', () => {
     });
 
     // test create a user in db
-    it('POST > 200 and user', () => {
-      return request(app.getHttpServer())
+    it('POST > 201 and user First name Last name and Email ', async () => {
+      // request into var
+      const req = await request(app.getHttpServer())
         .post('/users')
         .send(objPostUser)
-        .expect(200);
-      // .expect({});
+        .expect(201)
+        .then((res) => JSON.parse(res.text));
+
+      userIdToUpdate = req._id;
+
+      expect.assertions(3);
+
+      // use returned values
+      expect(req.firstName).toBe(objPostUser.firstName);
+      expect(req.lastName).toBe(objPostUser.lastName);
+      expect(req.email).toBe(objPostUser.email);
+    });
+
+    it('PUT > 200 and user updated data', async () => {
+      const req = await request(app.getHttpServer())
+        .put(`/users/${userIdToUpdate}`)
+        .send(objUpdateUser)
+        .expect(200)
+        .then((res) => JSON.parse(res.text));
+
+      expect.assertions(4);
+
+      // use returned values
+      expect(req.firstName).toBe(objUpdateUser.firstName);
+      expect(req.lastName).toBe(objUpdateUser.lastName);
+      expect(req.email).toBe(objUpdateUser.email);
+      expect(req.instruments[1]).toBe(objUpdateUser.instruments[1]);
+    });
+
+    it('GET - New all users db > length 1', async () => {
+      const req = await request(app.getHttpServer())
+        .get('/')
+        .expect(200)
+        .then((res) => console.log(res));
     });
   });
 });

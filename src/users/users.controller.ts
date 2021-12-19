@@ -1,8 +1,18 @@
-import { Controller, Get, Put, Post, Delete, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Put,
+  Post,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 
 // DTOs
 import { CreateUserDto } from '../dto/createUser.dto';
+
+import { Schema } from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -38,10 +48,13 @@ export class UsersController {
    * @return updates user
    */
 
-  //   @Put(':id')
-  //   public updateUser() {
-  //     return this.usersService.updateUser();
-  //   }
+  @Put(':id')
+  public updateUser(
+    @Body() updateUserDto: CreateUserDto,
+    @Param('id') id: string,
+  ) {
+    return this.usersService.updateUser(id, updateUserDto);
+  }
 
   /**
    * @desc DELETE route

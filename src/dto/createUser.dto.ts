@@ -1,3 +1,4 @@
+// DTO used by postUser and updateUser
 export class CreateUserDto {
   readonly firstName: string;
   readonly lastName: string;

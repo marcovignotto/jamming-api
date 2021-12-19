@@ -6,7 +6,7 @@ import * as crypto from 'crypto';
 
 // mongo
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 
 // models
 import { UserSchema } from '../schemas/user.schema';
@@ -55,7 +55,7 @@ export class UsersService {
    * @returns obj witrh the created user
    */
 
-  async postUser(
+  public async postUser(
     obj: CreateUserInterface,
   ): Promise<PromiseCreateUserInterface> {
     // destruc
@@ -99,25 +99,26 @@ export class UsersService {
    * @returns obj with the updated user
    */
 
-  public updateUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    instruments: string[],
-    role: string,
-  ): PostUserResponse {
-    const objToReturn = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      userCode: '009',
-      instruments: instruments,
-      role: role,
-    };
+  public async updateUser(
+    id: string,
+    //     id: Schema.Types.ObjectId,
+    obj: CreateUserInterface,
+  ): Promise<PromiseCreateUserInterface> {
+    try {
+      // find and update using the mongo _id
+      const userUpdated = await this.userModel.findOneAndUpdate(
+        { _id: id },
+        obj,
+        {
+          new: true,
+        },
+      );
 
-    return objToReturn;
+      return userUpdated;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(`${error}`, 400);
+    }
   }
 
   /**
