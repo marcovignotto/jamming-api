@@ -16,7 +16,7 @@ import {
   CreateUserInterface,
   PromiseCreateUserInterface,
   IUser,
-} from '../interfaces/createUser.interface';
+} from '../interfaces/user.interface';
 
 export interface PostUserResponse {
   firstName: string;
@@ -45,8 +45,10 @@ export interface DeleteUserResponse {
 export class UsersService {
   constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
 
-  public getAllUsers(): string[] {
-    return [];
+  public async getAllUsers(): Promise<object[]> {
+    const getAllUsersFromDb = await this.userModel.find();
+
+    return getAllUsersFromDb;
   }
 
   /**

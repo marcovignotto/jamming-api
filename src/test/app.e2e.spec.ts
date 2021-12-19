@@ -88,9 +88,15 @@ describe('AppController (e2e)', () => {
 
     it('GET - New all users db > length 1', async () => {
       const req = await request(app.getHttpServer())
-        .get('/')
+        .get('/users')
         .expect(200)
-        .then((res) => console.log(res));
+        .then((res) => JSON.parse(res.text));
+
+      // time for db update
+      setTimeout(() => {
+        expect.assertions(1);
+        expect(req).toHaveLength(1);
+      }, 2000);
     });
   });
 });

@@ -10,7 +10,7 @@ import { Model, Schema } from 'mongoose';
 import {
   CreateUserInterface,
   PromiseCreateUserInterface,
-} from '../interfaces/createUser.interface';
+} from '../interfaces/user.interface';
 
 // test objects
 // just for the unit testing
