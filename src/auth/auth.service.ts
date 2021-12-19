@@ -22,6 +22,20 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  // validation func
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.userModel.findOne({ email: email });
+
+    // TODO
+    console.log('validateUser', user);
+
+    if (user && user.password === pass) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+
   /**
    * @function getUserData
    * @param token

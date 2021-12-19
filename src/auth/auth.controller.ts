@@ -1,5 +1,15 @@
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
 import { AuthService } from './auth.service';
+import { LocalAuthGuard } from './local-auth.guard';
 
 // TDO
 import { RequestUserToken, RequestUserData } from '../dto/auth.tdo';
@@ -19,7 +29,8 @@ export class AuthController {
    * @private
    * @return get user info based with the token
    */
-  // TODO
+
+  @UseGuards(AuthGuard('local'))
   @Get()
   public getUserData(@Body() bodyUserData: RequestUserData) {
     return this.authService.getUserData(bodyUserData);
@@ -27,12 +38,13 @@ export class AuthController {
 
   /**
    * @desc POST route
-   * @path /
+   * @path /login
    * @public
    * @return to get a token
    */
 
-  @Post()
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
   public postToGetToken(@Body() bodyUserToken: RequestUserToken) {
     return this.authService.postToGetToken(bodyUserToken);
   }
