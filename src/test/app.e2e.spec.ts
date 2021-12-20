@@ -51,9 +51,6 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  // TODO
-  // general testing errors
-
   // complete flow of user get create update delete
   // the created user will perform all the CRUD and at the end there's no user in the db
   describe('/users - GET - POST - PUT - DELETE', () => {
@@ -93,9 +90,19 @@ describe('AppController (e2e)', () => {
       expect(req.email).toBe(objPostUserGeneral['email']);
     });
 
-    //TODO
-    // auth for user
-    // now general token
+    it('POST Error > 409 posting twice', async () => {
+      // request into var
+      const req = await request(app.getHttpServer())
+        .post(PATH_USERS)
+        .send(objPostUserGeneral)
+        .expect(409)
+        .then((res) => JSON.parse(res.text));
+
+      expect.assertions(1);
+
+      // use returned values
+      expect(req.message).toBe('Email already registered!');
+    });
 
     it('PUT > 200 and user updated data', async () => {
       const req = await request(app.getHttpServer())
@@ -146,9 +153,6 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  // TODO
-  // general testing errors
-
   // flow of to login and get a token to reuse
   // the user will get immediatly a valid token
   describe('/auth - GET - POST', () => {
@@ -181,6 +185,14 @@ describe('AppController (e2e)', () => {
       email: objPostUserGeneral['email'],
       password: objPostUserGeneral['password'],
     };
+
+    it('POST Error > 401 "Unauthorized"', async () => {
+      await request(app.getHttpServer())
+        .post(PATH_AUTH + '/login')
+        .send({ ...userRequestToken, email: 'wrong@email.com' })
+        .expect(401)
+        .then((res) => res.body);
+    });
 
     it('POST > 200 and token', async () => {
       const req = await request(app.getHttpServer())
@@ -367,7 +379,7 @@ describe('AppController (e2e)', () => {
         .expect(400);
     });
 
-    it('GET with query all > 200 and all the jams [] length 1 ', async () => {
+    it('GET WITHOUT query all > 200 and all the jams [] length 1 ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .query('all=true')
@@ -539,7 +551,7 @@ describe('AppController (e2e)', () => {
     // John Coltrane request and join
     // must return the available jam cause "Sax" is still available
 
-    it('GET - without query all > 200 and all JUST the jams available for the player [] length 1', async () => {
+    it('GET - WITHOUT query all > 200 and all JUST the jams available for the player [] length 1', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamPlayerThree)
@@ -604,7 +616,7 @@ describe('AppController (e2e)', () => {
     });
 
     // the player accidentaly tries to delete the jam but can't
-    it('DELETE > 401 the player is NOT the host ', async () => {
+    it('DELETE Error > 401 the player is NOT the host ', async () => {
       const req = await request(app.getHttpServer())
         .delete(PATH_JAMS + '/' + jamToJoinUrl)
         .set('Authorization', 'Bearer ' + tokenYokoOno())

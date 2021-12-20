@@ -23,6 +23,37 @@ export class AuthService {
   ) {}
 
   /**
+   * @function getUserData
+   * @param token
+   * @desc to get the user data by a token
+   * @returns the userdata
+   */
+  public async getUserData(user) {
+    // find user by email and return all info
+    const userFind = await this.userModel.findOne({ email: user.email });
+    // return error if the user does not exist
+    if (!user) {
+      throw new HttpException(`Invalid credentials!`, 401);
+    }
+
+    return userFind;
+  }
+
+  /**
+   * @function postToGetToken
+   * @param email
+   * @param password
+   * @desc to get a token
+   * @returns the token
+   */
+
+  public async postToGetToken(
+    token: IResponseRequestToken,
+  ): Promise<IResponseRequestToken> {
+    return token;
+  }
+
+  /**
    * @desc middleware
    */
 
@@ -56,36 +87,5 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
-  }
-
-  /**
-   * @function getUserData
-   * @param token
-   * @desc to get the user data by a token
-   * @returns the userdata
-   */
-  public async getUserData(user) {
-    // find user by email and return all info
-    const userFind = await this.userModel.findOne({ email: user.email });
-    // return error if the user does not exist
-    if (!user) {
-      throw new HttpException(`Invalid credentials!`, 401);
-    }
-
-    return userFind;
-  }
-
-  /**
-   * @function postToGetToken
-   * @param email
-   * @param password
-   * @desc to get a token
-   * @returns the token
-   */
-
-  public async postToGetToken(
-    token: IResponseRequestToken,
-  ): Promise<IResponseRequestToken> {
-    return token;
   }
 }
