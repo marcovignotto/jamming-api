@@ -56,7 +56,7 @@ describe('AppController (e2e)', () => {
 
   // complete flow of user get create update delete
   // the created user will perform all the CRUD and at the end there's no user in the db
-  describe.skip('/users - GET - POST - PUT - DELETE', () => {
+  describe('/users - GET - POST - PUT - DELETE', () => {
     // store tne user id for the PUT
     let userIdToUpdate = '';
 
@@ -151,10 +151,12 @@ describe('AppController (e2e)', () => {
 
   // flow of to login and get a token to reuse
   // the user will get immediatly a valid token
-  describe.skip('/auth - GET - POST', () => {
+  describe('/auth - GET - POST', () => {
+    let userTodelete = '';
+
     // Important
     // this test its just to create a user for the auth test
-    it.skip('Create the test user for the next test', async () => {
+    it('Create the test user for the next test', async () => {
       // request into var
       const req = await request(app.getHttpServer())
         .post(API_VERSION + '/users')
@@ -163,7 +165,7 @@ describe('AppController (e2e)', () => {
         .then((res) => JSON.parse(res.text));
 
       expect.assertions(3);
-
+      userTodelete = req._id;
       // use returned values
       expect(req.firstName).toBe(objPostUserGeneral['firstName']);
       expect(req.lastName).toBe(objPostUserGeneral['lastName']);
@@ -195,11 +197,9 @@ describe('AppController (e2e)', () => {
 
       // save toke for next test
       token = req.access_token;
-
-      console.log('TOEKN', token);
     });
 
-    it.skip('GET > 200 and user data ', async () => {
+    it('GET > 200 and user data ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_AUTH)
         .set('Authorization', 'Bearer ' + token)
@@ -213,8 +213,25 @@ describe('AppController (e2e)', () => {
       expect(req.lastName).toBe(objPostUserGeneral['lastName']);
       expect(req.email).toBe(objPostUserGeneral['email']);
     });
+
+    // the admin deletes the user
+    it('DELETE user with admin credentials > 200 and delete confirmation', async () => {
+      const req = await request(app.getHttpServer())
+        .delete(PATH_USERS + `/${userTodelete}`) // the same as update
+        .set('Authorization', 'Bearer ' + tokenUserGeneral()) // temp id
+        .expect(200)
+        .then((res) => res.text);
+
+      expect.assertions(4);
+
+      expect(req).toContain('User');
+      expect(req).toContain(objPostUserGeneral['firstName']);
+      expect(req).toContain(objPostUserGeneral['lastName']);
+      expect(req).toContain('deleted');
+    });
   });
 
+  // users to create for the next test
   // to create a jam we need a few users (players) with diffrerent instruments
   // one creates the jam for 4 players  in total and other 3 join
   // one arrives late and can't join
@@ -342,12 +359,12 @@ describe('AppController (e2e)', () => {
     });
 
     // check error in case of twice
-    it(`POST Error posting twice > 500 "Internal Server Error"`, async () => {
+    it(`POST Error posting twice > 400 "Bad Request"`, async () => {
       await request(app.getHttpServer())
         .post(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamHost)
         .send(testObjJamToCreate)
-        .expect(500);
+        .expect(400);
     });
 
     it('GET with query all > 200 and all the jams [] length 1 ', async () => {

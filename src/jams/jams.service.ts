@@ -67,61 +67,56 @@ export class JamsService {
    */
 
   public async postJam(jamToCreate: IJam): Promise<IJam> {
-    try {
-      // convert name to url with slugfy
-      const newJamUrl = slugify(jamToCreate.jamName.toString(), {
-        lower: true,
-      });
+    // convert name to url with slugfy
+    const newJamUrl = slugify(jamToCreate.jamName.toString(), {
+      lower: true,
+    });
 
-      // check if there's another jam withthe same name
-      const jamName = await this.jamModel.findOne({
-        jamName: jamToCreate.jamName,
-      });
-      if (jamName) {
-        throw new HttpException(`Jam name already exists`, 400);
-      }
-
-      // check if there's another jam with the same url
-      const jamUrl = await this.jamModel.findOne({
-        jamUrl: newJamUrl,
-      });
-
-      if (jamUrl) {
-        throw new HttpException(`Jam url already exists`, 400);
-      }
-
-      // find host
-      const jamHost = await this.userModel.findOne({
-        email: jamToCreate.hostEmail,
-      });
-
-      // generate jam code
-      const generatedJamCode = crypto.randomBytes(6).toString('hex');
-
-      const jamToSave = await new this.jamModel({
-        ...jamToCreate,
-        jamUrl: newJamUrl,
-        host: jamHost._id,
-        // spread instruments and add host's instrument
-        instruments: [...jamToCreate.instruments, jamHost.instrument],
-        joinedPlayers: [jamHost._id],
-        // add host's instrument
-        joinedInstruments: jamHost.instrument,
-        // rest of the instruments
-        availableInstruments: jamToCreate.instruments,
-        // total - the host
-        playersLeft: jamToCreate.totalNumberOfPlayers - 1,
-        jamCode: generatedJamCode,
-        hostEmail: '', // empty email
-      });
-
-      const savedJam = await jamToSave.save();
-
-      return savedJam;
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(`${error}`, 500);
+    // check if there's another jam withthe same name
+    const jamName = await this.jamModel.findOne({
+      jamName: jamToCreate.jamName,
+    });
+    if (jamName) {
+      throw new HttpException(`Jam name already exists`, 400);
     }
+
+    // check if there's another jam with the same url
+    const jamUrl = await this.jamModel.findOne({
+      jamUrl: newJamUrl,
+    });
+
+    if (jamUrl) {
+      throw new HttpException(`Jam url already exists`, 400);
+    }
+
+    // find host
+    const jamHost = await this.userModel.findOne({
+      email: jamToCreate.hostEmail,
+    });
+
+    // generate jam code
+    const generatedJamCode = crypto.randomBytes(6).toString('hex');
+
+    const jamToSave = await new this.jamModel({
+      ...jamToCreate,
+      jamUrl: newJamUrl,
+      host: jamHost._id,
+      // spread instruments and add host's instrument
+      instruments: [...jamToCreate.instruments, jamHost.instrument],
+      joinedPlayers: [jamHost._id],
+      // add host's instrument
+      joinedInstruments: jamHost.instrument,
+      // rest of the instruments
+      availableInstruments: jamToCreate.instruments,
+      // total - the host
+      playersLeft: jamToCreate.totalNumberOfPlayers - 1,
+      jamCode: generatedJamCode,
+      hostEmail: '', // empty email
+    });
+
+    const savedJam = await jamToSave.save();
+
+    return savedJam;
   }
   /**
    * @function updateJam
@@ -131,56 +126,51 @@ export class JamsService {
    */
 
   public async updateJam(url: IUrlJam, user: IUrlReq): Promise<IJam> {
-    try {
-      // find the jam with the url
-      const jamToJoin = await this.jamModel.findOne({ jamUrl: url });
-      // check if exists
-      if (!jamToJoin) {
-        throw new HttpException(`Jam does not exist!`, 400);
-      }
-
-      // get the user's data (the player that wants to join)
-      const userToJoin = await this.userModel.findOne({ email: user.email });
-      // check if exists
-      if (!userToJoin) {
-        throw new HttpException(`User does not exist!`, 400);
-      }
-
-      // update fields of the jam
-      // 5 steps
-
-      const updateJam = await this.jamModel
-        .findOneAndUpdate(
-          { jamUrl: url },
-          {
-            $addToSet: {
-              // 1. joinedPlayers: add the player
-              joinedPlayers: userToJoin._id,
-              // 2. joinedInstruments: add the instrument to array
-              joinedInstruments: userToJoin.instrument,
-            },
-
-            // 3. availableInstruments: remove the instrument from the array
-            $pull: { availableInstruments: userToJoin.instrument },
-
-            $set: {
-              // 4. playersLeft: totalNumberOfPlayers - joinedPlayers
-              playersLeft:
-                jamToJoin.totalNumberOfPlayers -
-                (jamToJoin.joinedPlayers.length + 1), // add cause in the first round the value is not updated yet
-              // 5. started: playersLeft - 1 === 0 ? true : false
-              started: jamToJoin.playersLeft - 1 === 0 ? true : false, // remove one cause is not updated
-            },
-          },
-          { new: true },
-        )
-        .exec();
-
-      return updateJam;
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(`${error}`, 500);
+    // find the jam with the url
+    const jamToJoin = await this.jamModel.findOne({ jamUrl: url });
+    // check if exists
+    if (!jamToJoin) {
+      throw new HttpException(`Jam does not exist!`, 400);
     }
+
+    // get the user's data (the player that wants to join)
+    const userToJoin = await this.userModel.findOne({ email: user.email });
+    // check if exists
+    if (!userToJoin) {
+      throw new HttpException(`User does not exist!`, 400);
+    }
+
+    // update fields of the jam
+    // 5 steps
+
+    const updateJam = await this.jamModel
+      .findOneAndUpdate(
+        { jamUrl: url },
+        {
+          $addToSet: {
+            // 1. joinedPlayers: add the player
+            joinedPlayers: userToJoin._id,
+            // 2. joinedInstruments: add the instrument to array
+            joinedInstruments: userToJoin.instrument,
+          },
+
+          // 3. availableInstruments: remove the instrument from the array
+          $pull: { availableInstruments: userToJoin.instrument },
+
+          $set: {
+            // 4. playersLeft: totalNumberOfPlayers - joinedPlayers
+            playersLeft:
+              jamToJoin.totalNumberOfPlayers -
+              (jamToJoin.joinedPlayers.length + 1), // add cause in the first round the value is not updated yet
+            // 5. started: playersLeft - 1 === 0 ? true : false
+            started: jamToJoin.playersLeft - 1 === 0 ? true : false, // remove one cause is not updated
+          },
+        },
+        { new: true },
+      )
+      .exec();
+
+    return updateJam;
   }
 
   /**

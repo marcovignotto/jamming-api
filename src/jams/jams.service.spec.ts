@@ -45,7 +45,7 @@ class JamsServiceMock {
   }
 }
 
-describe.skip('JamsService', () => {
+describe('JamsService', () => {
   let service: JamsService;
 
   const JamsServiceProvider = {

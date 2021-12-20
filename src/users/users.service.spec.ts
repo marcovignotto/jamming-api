@@ -57,14 +57,14 @@ class UsersServiceMock {
     return objToReturn;
   }
 
-  deleteUser(firstName: string, lastName: string, id: string) {
-    const deleteConfirmation = `User ${firstName} ${lastName} with the id ${id} deleted`;
+  deleteUser(id: string, user: object) {
+    const deleteConfirmation = `User ${objPostUser['firstName']} ${objPostUser['lastName']} with the id 009 deleted`;
 
     return deleteConfirmation;
   }
 }
 
-describe.skip('UsersService', () => {
+describe('UsersService', () => {
   let service: UsersService;
 
   beforeEach(async () => {

@@ -62,39 +62,34 @@ export class UsersService {
   public async postUser(
     obj: CreateUserInterface,
   ): Promise<PromiseCreateUserInterface> {
-    try {
-      // destruc
-      const { email, password } = obj;
+    // destruc
+    const { email, password } = obj;
 
-      // check if email is already in use
-      const signupEmail = await this.userModel.findOne({ email });
+    // check if email is already in use
+    const signupEmail = await this.userModel.findOne({ email });
 
-      if (signupEmail) {
-        throw new HttpException('Email already registered!', 409);
-      }
-      // generate salt
-      const salt = await bcrypt.genSalt(10);
-
-      // generate Password
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      // generate accountCode
-      const generatedAccountCode = crypto.randomBytes(6).toString('hex');
-
-      // create the new obj to save
-
-      const userToSave = await new this.userModel({
-        ...obj,
-        password: hashedPassword,
-        userCode: generatedAccountCode,
-      });
-      const savedDocument = await userToSave.save();
-
-      return savedDocument;
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(`${error}`, 400);
+    if (signupEmail) {
+      throw new HttpException('Email already registered!', 409);
     }
+    // generate salt
+    const salt = await bcrypt.genSalt(10);
+
+    // generate Password
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // generate accountCode
+    const generatedAccountCode = crypto.randomBytes(6).toString('hex');
+
+    // create the new obj to save
+
+    const userToSave = await new this.userModel({
+      ...obj,
+      password: hashedPassword,
+      userCode: generatedAccountCode,
+    });
+    const savedDocument = await userToSave.save();
+
+    return savedDocument;
   }
 
   /**
@@ -108,21 +103,16 @@ export class UsersService {
     //     id: Schema.Types.ObjectId,
     obj: CreateUserInterface,
   ): Promise<PromiseCreateUserInterface> {
-    try {
-      // find and update using the mongo _id
-      const userUpdated = await this.userModel.findOneAndUpdate(
-        { _id: id },
-        obj,
-        {
-          new: true,
-        },
-      );
+    // find and update using the mongo _id
+    const userUpdated = await this.userModel.findOneAndUpdate(
+      { _id: id },
+      obj,
+      {
+        new: true,
+      },
+    );
 
-      return userUpdated;
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(`${error}`, 400);
-    }
+    return userUpdated;
   }
 
   /**

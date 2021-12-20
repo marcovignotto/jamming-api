@@ -7,7 +7,7 @@ import { JamsService } from './jams.service';
 import { UserSchema } from '../schemas/user.schema';
 import { JamSchema } from '../schemas/jam.schema';
 
-describe.skip('JamsController', () => {
+describe('JamsController', () => {
   let controller: JamsController;
 
   beforeEach(async () => {
