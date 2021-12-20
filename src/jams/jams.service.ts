@@ -166,7 +166,7 @@ export class JamsService {
                 jamToJoin.totalNumberOfPlayers -
                 (jamToJoin.joinedPlayers.length + 1), // add cause in the first round the value is not updated yet
               // started: playersLeft +1 === 0 ? true : false
-              started: jamToJoin.playersLeft + 1 === 0 ? true : false,
+              started: jamToJoin.playersLeft - 1 === 0 ? true : false,
             },
           },
           { new: true },

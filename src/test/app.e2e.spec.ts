@@ -226,7 +226,25 @@ describe('AppController (e2e)', () => {
     }
   });
 
-  // create the jam
+  // * Now create the JAM!
+  // * Now create the JAM!
+  // * Now create the JAM!
+  // once all the 5 users are created on a blank collection (jams)
+  // all those process are simulating the creation of a jam from one user (Bob Dylan)
+  // and the join of the jam from other 4 users
+
+  // but the space is just for 3 users!
+  // so one will not find her spot
+
+  // The sequence
+  // 1. Bod Dylan creates the Jam (4 players, 3 spots available)
+  // 2. Joni Mitchell requests and find an available spot for "Voice" (2 spots available)
+  // 3. Yoko Ono requests and does not find cause "Voice" is gone
+  // 4. Yoko ono retries and see the jam but can't join it
+  // 5. Neil Young requests and find an available spot for "Guitar" (1 spot available)
+  // 6. John Coltrane requests and find an available spot for "Sax" (0 spots available)
+  // 7. Yoko Ono requests and does not find cause the jam is not available
+
   describe('/jams - GET - POST - PUT - DELETE', () => {
     // to have a simpler authorization some token
     const tokenJamHost = tokenBodDylan();
@@ -236,8 +254,6 @@ describe('AppController (e2e)', () => {
     const tokenJamPlayerThree = tokenJohnColtrane();
     // the too late player
     const tokenJamPlayerFour = tokenYokoOno();
-
-    let jamToJoinUrl = '';
 
     const testObjJamToCreate = {
       hostEmail: credentialBobDylan()['email'],
@@ -251,6 +267,8 @@ describe('AppController (e2e)', () => {
       totalNumberOfPlayers: 4,
       kindOfMusic: 'Rock Folk Jazz ',
     };
+
+    let jamToJoinUrl = testObjJamToCreate.jamUrl;
 
     it('GET > 200 and all the jams [] length 0 ', async () => {
       const req = await request(app.getHttpServer())
@@ -268,7 +286,7 @@ describe('AppController (e2e)', () => {
 
     // create jam
     // created by bod dylan
-    it.skip('POST > 201 and the created jam', async () => {
+    it('POST > 201 and the created jam', async () => {
       const req = await request(app.getHttpServer())
         .post(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamHost)
@@ -300,7 +318,9 @@ describe('AppController (e2e)', () => {
         testObjJamToCreate['totalNumberOfPlayers'] - 1,
       );
     });
-    it.skip(`POST Error posting twice > 500 "Internal Server Error"`, async () => {
+
+    // check error in case of twice
+    it(`POST Error posting twice > 500 "Internal Server Error"`, async () => {
       await request(app.getHttpServer())
         .post(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamHost)
@@ -340,7 +360,7 @@ describe('AppController (e2e)', () => {
     // now Joni Mitchel makes request
     // must return the available jam cause "Voice" is still available
 
-    it.skip('GET - without query all > 200 and all JUST the jams avaible for the player [] length 1', async () => {
+    it('GET - without query all > 200 and all JUST the jams avaible for the player [] length 1', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamPlayerOne)
@@ -355,11 +375,11 @@ describe('AppController (e2e)', () => {
       expect(Number(req.length)).toBe(1);
     });
 
-    // joins the jam
+    // Joni Mitchell joins the jam
     // new PUT request to the specific jam i.e. /jams/jamming-with-mr-tamburine
     // and join with the instrument
 
-    it.skip('PUT - join the available jam', async () => {
+    it('PUT - join the available jam', async () => {
       const joinJam = await request(app.getHttpServer())
         .put(PATH_JAMS + '/' + jamToJoinUrl)
         .set('Authorization', 'Bearer ' + tokenJamPlayerOne)
@@ -387,7 +407,7 @@ describe('AppController (e2e)', () => {
     // now Yoko Ono makes request
     // but the instrument voice is gone
     // must NOT return the available jam
-    it('GET - without query all > 200 and NO jams available for the player [] length 1', async () => {
+    it('GET - WITHOUT query all > 200 and NO jams available for the player [] length 1', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamPlayerFour)
@@ -402,7 +422,7 @@ describe('AppController (e2e)', () => {
 
     // Yoko Ono is stubborn and makes request with all=true
     // returns 1 jam but NOT joinable
-    it('GET - with query all > 200 and NO jams available for the player [] length 1', async () => {
+    it('GET - WITH query all > 200 and NO jams available for the player [] length 1', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .query('all=true') // to show all the jams
@@ -430,12 +450,119 @@ describe('AppController (e2e)', () => {
       expect(req[0].host.firstName).toBe(credentialBobDylan()['firstName']);
     });
 
-    // neil young request and join
+    // now Neil Young makes request
+    // must return the available jam cause "Guitar" is still available
+
+    it('GET - WITHOUT query all > 200 and all JUST the jams available for the player [] length 1', async () => {
+      const req = await request(app.getHttpServer())
+        .get(PATH_JAMS)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerTwo)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(1);
+
+      jamToJoinUrl = req[0].jamUrl;
+
+      // use returned values
+      expect(Number(req.length)).toBe(1);
+    });
+
+    // neil young joins
+    // new PUT request to the specific jam i.e. /jams/jamming-with-mr-tamburine
+    // and join with the instrument
+
+    it('PUT - join the available jam', async () => {
+      const joinJam = await request(app.getHttpServer())
+        .put(PATH_JAMS + '/' + jamToJoinUrl)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerTwo)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(4);
+
+      // check if the instrumnet is moved into the joined instrument
+      expect(joinJam['joinedInstruments']).toContain(
+        credentialNeilYoung()['instrument'],
+      );
+
+      // check if the instrumnet is not available anymore
+      expect(joinJam['availableInstruments']).not.toContain(
+        credentialNeilYoung()['instrument'],
+      );
+      // check if the player is added to the array
+      expect(joinJam['joinedPlayers']).toHaveLength(3);
+
+      // check if there's one player less
+      expect(joinJam['playersLeft']).toBe(1);
+    });
 
     // John Coltrane request and join
+    // must return the available jam cause "Sax" is still available
+
+    it('GET - without query all > 200 and all JUST the jams available for the player [] length 1', async () => {
+      const req = await request(app.getHttpServer())
+        .get(PATH_JAMS)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerThree)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(1);
+
+      jamToJoinUrl = req[0].jamUrl;
+
+      // use returned values
+      expect(Number(req.length)).toBe(1);
+    });
+
+    // John Coltrane joins
+    // new PUT request to the specific jam i.e. /jams/jamming-with-mr-tamburine
+    // and join with the instrument
+
+    it('PUT - join the available jam', async () => {
+      const joinJam = await request(app.getHttpServer())
+        .put(PATH_JAMS + '/' + jamToJoinUrl)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerThree)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(5);
+
+      // check if the instrumnet is moved into the joined instrument
+      expect(joinJam['joinedInstruments']).toContain(
+        credentialJohnColtrane()['instrument'],
+      );
+
+      // check if the instrumnet is not available anymore
+      expect(joinJam['availableInstruments']).not.toContain(
+        credentialJohnColtrane()['instrument'],
+      );
+      // check if the player is added to the array
+      expect(joinJam['joinedPlayers']).toHaveLength(4);
+
+      // check if there's one player less
+      expect(joinJam['playersLeft']).toBe(0);
+
+      // IMPORTANT
+      // the last player joined so must be true
+
+      expect(joinJam['started']).toBe(true);
+    });
 
     // now Yoko Ono makes request
     // but no jams are available
+    it('GET - without query all > 200 and NO jams available for the player [] length 1', async () => {
+      const req = await request(app.getHttpServer())
+        .get(PATH_JAMS)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerFour)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(1);
+
+      // use returned values
+      expect(Number(req.length)).toBe(0);
+    });
   });
   afterAll(async () => {
     await app.close();
