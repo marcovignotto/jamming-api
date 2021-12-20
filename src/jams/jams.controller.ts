@@ -17,7 +17,7 @@ import { JamsService } from './jams.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 // tdo
-import { CreateJamDto } from '../dto/jam.dto';
+import { CreateJamDto, UrlJam } from '../dto/jam.dto';
 
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
@@ -32,7 +32,7 @@ export class JamsController {
    * @private for users
    * @return returns all the current jams
    */
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard) // needed to get user's email
   @Get()
   public getAllJams(@Query('all') all, @Request() req) {
     // forward query all and email
@@ -49,7 +49,7 @@ export class JamsController {
    */
 
   // TODO
-  // ???
+  // ??? problem DTO
   @Post()
   public postJam(@Body() createJamDto: CreateJamDto | any) {
     return this.jamsService.postJam(createJamDto);
@@ -57,14 +57,15 @@ export class JamsController {
 
   /**
    * @desc PUT route
-   * @path /:id
+   * @path /:url
    * @private admin / user (owner)
    * @return updates jam
    */
-
-  @Put()
-  public updateJam() {
-    return this.jamsService.updateJam();
+  @UseGuards(JwtAuthGuard) // needed to get user's email
+  @Put(':url')
+  public updateJam(@Param('url') url: UrlJam, @Request() req) {
+    // forward the url to the func
+    return this.jamsService.updateJam(url, req.user);
   }
 
   /**

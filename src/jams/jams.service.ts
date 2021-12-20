@@ -34,7 +34,11 @@ export class JamsService {
     // if true the user request all  the jams
     // NOT jsut the ones avaible based on the instrument
     if (all) {
-      const allJams = await this.jamModel.find();
+      const allJams = await this.jamModel
+        .find()
+        // select just some fields
+        .populate('host', 'firstName lastName instrument -_id')
+        .populate('joinedPlayers', 'firstName lastName instrument -_id');
       return allJams;
     }
 
@@ -48,9 +52,13 @@ export class JamsService {
     }
 
     // find al the jams to filter
-    const avaibleJams = await this.jamModel.find({
-      availableInstruments: findPlayer.instrument,
-    });
+    const avaibleJams = await this.jamModel
+      .find({
+        availableInstruments: findPlayer.instrument,
+      })
+      // select just some fields
+      .populate('host', 'firstName lastName instrument -_id')
+      .populate('joinedPlayers', 'firstName lastName instrument -_id');
 
     return avaibleJams;
   }
@@ -62,7 +70,6 @@ export class JamsService {
    */
 
   public async postJam(jamToCreate: IJam): Promise<IJam> {
-    console.log('jamToCreate', jamToCreate);
     try {
       // check if there's another jam withthe same url
       const jamUrl = await this.jamModel.findOne({
@@ -92,8 +99,14 @@ export class JamsService {
       const jamToSave = await new this.jamModel({
         ...jamToCreate,
         host: jamHost._id,
+        // spread instruments and add host's instrument
+        instruments: [...jamToCreate.instruments, jamHost.instrument],
+        joinedPlayers: [jamHost._id],
+        // add host's instrument
         joinedInstruments: jamHost.instrument,
+        // rest of the instruments
         availableInstruments: jamToCreate.instruments,
+        // total - the host
         playersLeft: jamToCreate.totalNumberOfPlayers - 1,
         jamCode: generatedJamCode,
         hostEmail: '', // empty email
@@ -109,12 +122,62 @@ export class JamsService {
   }
   /**
    * @function updateJam
+   * @param url
    * @desc to update or join a jam
    * @returns obj with the updated jam
    */
 
-  public updateJam() {
-    return 'Update JAM';
+  public async updateJam(url, user) {
+    try {
+      // find the jam with the url
+      const jamToJoin = await this.jamModel.findOne({ jamUrl: url });
+      // check if exists
+      if (!jamToJoin) {
+        throw new HttpException(`Jam does not exist!`, 400);
+      }
+
+      // get the user's data (the player that wants to join)
+      const userToJoin = await this.userModel.findOne({ email: user.email });
+      // check if exists
+      if (!userToJoin) {
+        throw new HttpException(`User does not exist!`, 400);
+      }
+
+      // update fields of the jam
+      // 5 steps
+
+      const updateJam = await this.jamModel
+        .findOneAndUpdate(
+          { jamUrl: url },
+          {
+            $addToSet: {
+              // 1. joinedPlayers: add the player
+              joinedPlayers: userToJoin._id,
+              // 2. joinedInstruments: add the instrument to array
+              joinedInstruments: userToJoin.instrument,
+            },
+
+            // 3. availableInstruments: remove the instrument from the array
+            $pull: { availableInstruments: userToJoin.instrument },
+
+            // 4. playersLeft: totalNumberOfPlayers - joinedPlayers
+            $set: {
+              playersLeft:
+                jamToJoin.totalNumberOfPlayers -
+                (jamToJoin.joinedPlayers.length + 1), // add cause in the first round the value is not updated yet
+              // started: playersLeft +1 === 0 ? true : false
+              started: jamToJoin.playersLeft + 1 === 0 ? true : false,
+            },
+          },
+          { new: true },
+        )
+        .exec();
+
+      return updateJam;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(`${error}`, 500);
+    }
   }
 
   /**

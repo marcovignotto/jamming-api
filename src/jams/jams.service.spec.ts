@@ -37,7 +37,7 @@ class JamsServiceMock {
   postJam(obj: object | any): object {
     return obj;
   }
-  updateJam(): object {
+  updateJam(url, user): object {
     return testUpdateJamObj;
   }
   deleteJam(): string {
@@ -87,7 +87,7 @@ describe.skip('JamsService', () => {
   it('updateJam()  > jam obj updated', () => {
     const expectedResult = testUpdateJamObj;
 
-    const res = service.updateJam();
+    const res = service.updateJam('jam-url', { email: 'email@gmail.com' });
 
     expect(res).toBe(expectedResult);
   });

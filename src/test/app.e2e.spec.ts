@@ -266,6 +266,7 @@ describe('AppController (e2e)', () => {
       expect(Number(req.length)).toBe(Number(req.length));
     });
 
+    // create jam
     // created by bod dylan
     it.skip('POST > 201 and the created jam', async () => {
       const req = await request(app.getHttpServer())
@@ -279,9 +280,10 @@ describe('AppController (e2e)', () => {
 
       expect(req['jamName']).toBe(testObjJamToCreate['jamName']);
       expect(req['jamUrl']).toBe(testObjJamToCreate['jamUrl']);
-      expect(req['instruments']).toStrictEqual(
-        testObjJamToCreate['instruments'],
-      );
+      expect(req['instruments']).toStrictEqual([
+        ...testObjJamToCreate['instruments'],
+        credentialBobDylan()['instrument'],
+      ]);
       // all the instruments
       expect(req['availableInstruments']).toStrictEqual(
         testObjJamToCreate['instruments'],
@@ -336,9 +338,9 @@ describe('AppController (e2e)', () => {
     });
 
     // now Joni Mitchel makes request
-    // must return the available jam
-    // joins the jam
-    it('GET without query all > 200 and all JUST the jams avaible for the player [] length 1', async () => {
+    // must return the available jam cause "Voice" is still available
+
+    it.skip('GET - without query all > 200 and all JUST the jams avaible for the player [] length 1', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamPlayerOne)
@@ -347,21 +349,86 @@ describe('AppController (e2e)', () => {
 
       expect.assertions(1);
 
-      jamToJoinUrl = req.jamUrl;
+      jamToJoinUrl = req[0].jamUrl;
 
       // use returned values
       expect(Number(req.length)).toBe(1);
+    });
 
-      // new requet to the specific jam i.e. /jams/jamming-with-mr-tamburine
-      // and join with the instrument
+    // joins the jam
+    // new PUT request to the specific jam i.e. /jams/jamming-with-mr-tamburine
+    // and join with the instrument
+
+    it.skip('PUT - join the available jam', async () => {
+      const joinJam = await request(app.getHttpServer())
+        .put(PATH_JAMS + '/' + jamToJoinUrl)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerOne)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(4);
+
+      // check if the instrumnet is moved into the joined instrument
+      expect(joinJam['joinedInstruments']).toContain(
+        credentialJoniMitchell()['instrument'],
+      );
+
+      // check if the instrumnet is not available anymore
+      expect(joinJam['availableInstruments']).not.toContain(
+        credentialJoniMitchell()['instrument'],
+      );
+      // check if the player is added to the array
+      expect(joinJam['joinedPlayers']).toHaveLength(2);
+
+      // check if there's one player less
+      expect(joinJam['playersLeft']).toBe(2);
     });
 
     // now Yoko Ono makes request
-    // but the voice is gone
+    // but the instrument voice is gone
     // must NOT return the available jam
+    it('GET - without query all > 200 and NO jams available for the player [] length 1', async () => {
+      const req = await request(app.getHttpServer())
+        .get(PATH_JAMS)
+        .set('Authorization', 'Bearer ' + tokenJamPlayerFour)
+        .expect(200)
+        .then((res) => res.body);
 
-    // now Yoko Ono makes request with all
-    // returns 1 jam but not joinable
+      expect.assertions(1);
+
+      // use returned values
+      expect(Number(req.length)).toBe(0);
+    });
+
+    // Yoko Ono is stubborn and makes request with all=true
+    // returns 1 jam but NOT joinable
+    it('GET - with query all > 200 and NO jams available for the player [] length 1', async () => {
+      const req = await request(app.getHttpServer())
+        .get(PATH_JAMS)
+        .query('all=true') // to show all the jams
+        .set('Authorization', 'Bearer ' + tokenJamPlayerFour)
+        .expect(200)
+        .then((res) => res.body);
+
+      expect.assertions(5);
+
+      // check if mongo populate works
+
+      // use returned values
+      expect(Number(req.length)).toBe(1);
+      // two players already joined
+      expect(req[0].joinedPlayers.length).toBe(2);
+      // check the name of the player 1 (host)
+      expect(req[0].joinedPlayers[0].firstName).toBe(
+        credentialBobDylan()['firstName'],
+      );
+      // check the name of the player 2
+      expect(req[0].joinedPlayers[1].firstName).toBe(
+        credentialJoniMitchell()['firstName'],
+      );
+      // host
+      expect(req[0].host.firstName).toBe(credentialBobDylan()['firstName']);
+    });
 
     // neil young request and join
 
