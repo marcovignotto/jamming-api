@@ -1,6 +1,7 @@
 import { Injectable, HttpException } from '@nestjs/common';
 
 import * as crypto from 'crypto';
+import slugify from 'slugify';
 
 // mongo
 import { InjectModel } from '@nestjs/mongoose';
@@ -67,14 +68,10 @@ export class JamsService {
 
   public async postJam(jamToCreate: IJam): Promise<IJam> {
     try {
-      // check if there's another jam withthe same url
-      const jamUrl = await this.jamModel.findOne({
-        jamUrl: jamToCreate.jamUrl,
+      // convert name to url with slugfy
+      const newJamUrl = slugify(jamToCreate.jamName.toString(), {
+        lower: true,
       });
-
-      if (jamUrl) {
-        throw new HttpException(`Jam url already exists`, 400);
-      }
 
       // check if there's another jam withthe same name
       const jamName = await this.jamModel.findOne({
@@ -82,6 +79,15 @@ export class JamsService {
       });
       if (jamName) {
         throw new HttpException(`Jam name already exists`, 400);
+      }
+
+      // check if there's another jam with the same url
+      const jamUrl = await this.jamModel.findOne({
+        jamUrl: newJamUrl,
+      });
+
+      if (jamUrl) {
+        throw new HttpException(`Jam url already exists`, 400);
       }
 
       // find host
@@ -94,6 +100,7 @@ export class JamsService {
 
       const jamToSave = await new this.jamModel({
         ...jamToCreate,
+        jamUrl: newJamUrl,
         host: jamHost._id,
         // spread instruments and add host's instrument
         instruments: [...jamToCreate.instruments, jamHost.instrument],

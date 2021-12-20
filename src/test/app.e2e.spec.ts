@@ -271,7 +271,7 @@ describe('AppController (e2e)', () => {
   // 8. Yoko Ono accidentaly tries to delete the jam but she CAN'T because she  is not the host
   // 9. It's late and Bod Dylan deletes the jam (he is the host)
 
-  describe.skip('/jams - GET - POST - PUT - DELETE', () => {
+  describe('/jams - GET - POST - PUT - DELETE', () => {
     // to have a simpler authorization some token
     const tokenJamHost = tokenBodDylan();
     // other players
@@ -282,15 +282,15 @@ describe('AppController (e2e)', () => {
     const tokenJamPlayerFour = tokenYokoOno();
 
     const testObjJamToCreate = {
-      hostEmail: credentialBobDylan()['email'],
       jamName: 'Jamming with Mr Tamburine',
-      jamUrl: 'jamming-with-mr-tamburine',
+      hostEmail: credentialBobDylan()['email'],
       instruments: ['Guitar', 'Voice', 'Sax'],
       totalNumberOfPlayers: 4,
       kindOfMusic: 'Rock Folk Jazz ',
     };
 
-    let jamToJoinUrl = testObjJamToCreate.jamUrl;
+    // just for testing the already converted url
+    let jamToJoinUrl = 'jamming-with-mr-tamburine';
 
     it('GET > 200 and all the jams [] length 0 ', async () => {
       const req = await request(app.getHttpServer())
@@ -319,7 +319,7 @@ describe('AppController (e2e)', () => {
       expect.assertions(7);
 
       expect(req['jamName']).toBe(testObjJamToCreate['jamName']);
-      expect(req['jamUrl']).toBe(testObjJamToCreate['jamUrl']);
+      expect(req['jamUrl']).toBe(jamToJoinUrl);
       expect(req['instruments']).toStrictEqual([
         ...testObjJamToCreate['instruments'],
         credentialBobDylan()['instrument'],
