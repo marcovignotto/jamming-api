@@ -6,16 +6,17 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Public } from '../decorators/public.decorator';
 
 import { UsersService } from './users.service';
 
 // DTOs
 import { CreateUserDto } from '../dto/user.dto';
-
-import { Schema } from 'mongoose';
 
 import apiVersion from '../../config/apiVersion';
 
@@ -71,9 +72,10 @@ export class UsersController {
    * @private admin / user (owner)
    * @return deletes user
    */
-
-  //   @Delete(':id')
-  //   public deleteUser() {
-  //     return this.usersService.deleteUser();
-  //   }
+  @UseGuards(JwtAuthGuard) // needed to get user's email and check the owner or admin
+  @Delete(':id')
+  public deleteUser(@Param('id') id: string, @Request() req) {
+    // forward user id and user data
+    return this.usersService.deleteUser(id, req.user);
+  }
 }

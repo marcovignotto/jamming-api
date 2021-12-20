@@ -1,15 +1,23 @@
 /**
  * @desc returns test credentials for testing
+ *       contains user object and valid tokens
  */
 
 // creates an admin
 const userAdmin = {
-  firstName: 'Jane',
+  firstName: 'John the Second',
   lastName: 'Doe',
-  email: 'janedoe@gmail.com',
+  email: 'johndoe@gmail.com',
   password: '12345678',
   instrument: 'Voice',
   role: 'admin',
+};
+
+export const tokenUserAdmin = () =>
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImphbmVkb2VAZ21haWwuY29tIiwiaWF0IjoxNjQwMDAwMjExLCJleHAiOjE2NDUxODQyMTF9.JbGlwR1XfnZ_tSGI1uvFjSIC0zVmhr60DfHAM9jPuGM';
+
+export const credentialUserAdmin = (): object => {
+  return userAdmin;
 };
 
 // creates a general user with no admin power
@@ -22,9 +30,8 @@ const userGeneral = {
   role: 'user',
 };
 
-export const credentialUserAdmin = (): object => {
-  return userAdmin;
-};
+export const tokenUserGeneral = () =>
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29tIiwiaWF0IjoxNjQwMDAwMDg0LCJleHAiOjE2NDUxODQwODR9.ARfooNQVGQIZ_E0SCYqwHQHbhYwBg57Lpeqzn7I1Aqc';
 
 export const credentialUserGeneral = (): object => {
   return userGeneral;

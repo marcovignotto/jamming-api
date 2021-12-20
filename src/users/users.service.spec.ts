@@ -115,11 +115,9 @@ describe.skip('UsersService', () => {
   });
 
   it(`deleteUser() > user first name last name id deleted`, async () => {
-    const func = await service.deleteUser(
-      objPostUser['firstName'],
-      objPostUser['lastName'],
-      '009',
-    );
+    const func = await service.deleteUser('id45i9440509', {
+      email: 'email@gmail.com',
+    });
 
     expect.assertions(1);
 

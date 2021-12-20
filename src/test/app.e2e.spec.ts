@@ -8,6 +8,8 @@ import { AppModule } from '../app.module';
 import {
   credentialUserGeneral,
   credentialUserAdmin,
+  tokenUserAdmin,
+  tokenUserGeneral,
   credentialBobDylan,
   credentialJohnColtrane,
   credentialJoniMitchell,
@@ -26,9 +28,9 @@ import apiVersion from '../../config/apiVersion';
 const API_VERSION = apiVersion();
 
 // test obj
-const objPostUser = credentialUserGeneral();
+const objPostUserGeneral = credentialUserGeneral();
 
-const objUpdateUser = credentialUserAdmin();
+const objUpdateUserToAdmin = credentialUserAdmin();
 
 // paths
 const PATH_USERS = API_VERSION + '/users';
@@ -52,14 +54,17 @@ describe('AppController (e2e)', () => {
   // TODO
   // general testing errors
 
+  // complete flow of user get create update delete
+  // the created user will perform all the CRUD and at the end there's no user in the db
   describe.skip('/users - GET - POST - PUT - DELETE', () => {
     // store tne user id for the PUT
     let userIdToUpdate = '';
 
     // test the  user db
-    it.skip(`GET > [] `, async () => {
+    it(`GET > [] `, async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_USERS)
+        .set('Authorization', 'Bearer ' + tokenUserGeneral()) // ! using a temp token
         .expect(200)
         .then((res) => res.body);
 
@@ -74,7 +79,7 @@ describe('AppController (e2e)', () => {
       // request into var
       const req = await request(app.getHttpServer())
         .post(PATH_USERS)
-        .send(objPostUser)
+        .send(objPostUserGeneral)
         .expect(201)
         .then((res) => JSON.parse(res.text));
 
@@ -83,9 +88,9 @@ describe('AppController (e2e)', () => {
       expect.assertions(3);
 
       // use returned values
-      expect(req.firstName).toBe(objPostUser['firstName']);
-      expect(req.lastName).toBe(objPostUser['lastName']);
-      expect(req.email).toBe(objPostUser['email']);
+      expect(req.firstName).toBe(objPostUserGeneral['firstName']);
+      expect(req.lastName).toBe(objPostUserGeneral['lastName']);
+      expect(req.email).toBe(objPostUserGeneral['email']);
     });
 
     //TODO
@@ -95,24 +100,25 @@ describe('AppController (e2e)', () => {
     it('PUT > 200 and user updated data', async () => {
       const req = await request(app.getHttpServer())
         .put(PATH_USERS + `/${userIdToUpdate}`)
-        .set('Authorization', 'Bearer ' + tokenBodDylan()) // ! using a temp token
-        .send(objUpdateUser)
+        .set('Authorization', 'Bearer ' + tokenUserGeneral())
+        .send(objUpdateUserToAdmin)
         .expect(200)
         .then((res) => JSON.parse(res.text));
 
       expect.assertions(4);
 
       // use returned values
-      expect(req.firstName).toBe(objUpdateUser['firstName']);
-      expect(req.lastName).toBe(objUpdateUser['lastName']);
-      expect(req.email).toBe(objUpdateUser['email']);
-      expect(req.instruments).toBe(objUpdateUser['instruments']);
+      expect(req.firstName).toBe(objUpdateUserToAdmin['firstName']);
+      expect(req.lastName).toBe(objUpdateUserToAdmin['lastName']);
+      expect(req.email).toBe(objUpdateUserToAdmin['email']);
+      expect(req.instruments).toBe(objUpdateUserToAdmin['instruments']);
     });
 
     // work if the DB was empty
-    it.skip('GET - New all users db > length 1', async () => {
+    it('GET - New all users db > length 1', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_USERS)
+        .set('Authorization', 'Bearer ' + tokenUserAdmin())
         .expect(200)
         .then((res) => res.body);
 
@@ -122,11 +128,29 @@ describe('AppController (e2e)', () => {
         expect(Number(req.length)).toBe(Number(req.length));
       }, 2000);
     });
+
+    // the admin deletes the user
+    it('DELETE user with admin credentials > 200 and delete confirmation', async () => {
+      const req = await request(app.getHttpServer())
+        .delete(PATH_USERS + `/${userIdToUpdate}`) // the same as update
+        .set('Authorization', 'Bearer ' + tokenUserGeneral()) // temp id
+        .expect(200)
+        .then((res) => res.text);
+
+      expect.assertions(4);
+
+      expect(req).toContain('User');
+      expect(req).toContain(objUpdateUserToAdmin['firstName']);
+      expect(req).toContain(objUpdateUserToAdmin['lastName']);
+      expect(req).toContain('deleted');
+    });
   });
 
   // TODO
   // general testing errors
 
+  // flow of to login and get a token to reuse
+  // the user will get immediatly a valid token
   describe.skip('/auth - GET - POST', () => {
     // Important
     // this test its just to create a user for the auth test
@@ -134,16 +158,16 @@ describe('AppController (e2e)', () => {
       // request into var
       const req = await request(app.getHttpServer())
         .post(API_VERSION + '/users')
-        .send(objPostUser)
+        .send(objPostUserGeneral)
         .expect(201)
         .then((res) => JSON.parse(res.text));
 
       expect.assertions(3);
 
       // use returned values
-      expect(req.firstName).toBe(objPostUser['firstName']);
-      expect(req.lastName).toBe(objPostUser['lastName']);
-      expect(req.email).toBe(objPostUser['email']);
+      expect(req.firstName).toBe(objPostUserGeneral['firstName']);
+      expect(req.lastName).toBe(objPostUserGeneral['lastName']);
+      expect(req.email).toBe(objPostUserGeneral['email']);
     });
 
     // store token for get request
@@ -152,8 +176,8 @@ describe('AppController (e2e)', () => {
     // has to be the one created in the previous test
 
     const userRequestToken = {
-      email: objPostUser['email'],
-      password: objPostUser['password'],
+      email: objPostUserGeneral['email'],
+      password: objPostUserGeneral['password'],
     };
 
     it('POST > 200 and token', async () => {
@@ -185,9 +209,9 @@ describe('AppController (e2e)', () => {
       expect.assertions(3);
 
       // use returned values
-      expect(req.firstName).toBe(objPostUser['firstName']);
-      expect(req.lastName).toBe(objPostUser['lastName']);
-      expect(req.email).toBe(objPostUser['email']);
+      expect(req.firstName).toBe(objPostUserGeneral['firstName']);
+      expect(req.lastName).toBe(objPostUserGeneral['lastName']);
+      expect(req.email).toBe(objPostUserGeneral['email']);
     });
   });
 
@@ -244,8 +268,10 @@ describe('AppController (e2e)', () => {
   // 5. Neil Young requests and find an available spot for "Guitar" (1 spot available)
   // 6. John Coltrane requests and find an available spot for "Sax" (0 spots available)
   // 7. Yoko Ono requests and does not find cause the jam is not available
+  // 8. Yoko Ono accidentaly tries to delete the jam but she CAN'T because she  is not the host
+  // 9. It's late and Bod Dylan deletes the jam (he is the host)
 
-  describe('/jams - GET - POST - PUT - DELETE', () => {
+  describe.skip('/jams - GET - POST - PUT - DELETE', () => {
     // to have a simpler authorization some token
     const tokenJamHost = tokenBodDylan();
     // other players
@@ -259,11 +285,7 @@ describe('AppController (e2e)', () => {
       hostEmail: credentialBobDylan()['email'],
       jamName: 'Jamming with Mr Tamburine',
       jamUrl: 'jamming-with-mr-tamburine',
-      // host: string,
-      // joinedPlayers: string[],
       instruments: ['Guitar', 'Voice', 'Sax'],
-      // joinedInstruments: ["Harmonica"],
-      // availableInstruments: ['Guitar', 'Voice', 'Sax',
       totalNumberOfPlayers: 4,
       kindOfMusic: 'Rock Folk Jazz ',
     };
@@ -579,8 +601,7 @@ describe('AppController (e2e)', () => {
       );
     });
 
-    // Bod Dylan deletes the jam
-
+    // the host deletes the jam
     it('DELETE > 200 and delete confirmation ', async () => {
       const req = await request(app.getHttpServer())
         .delete(PATH_JAMS + '/' + jamToJoinUrl)

@@ -15,6 +15,9 @@ import {
   IUser,
 } from '../interfaces/user.interfaces';
 
+// interfaces
+import { IUrlReq } from '../interfaces/jam.interfaces';
+
 //TODO
 // external Interfaces
 export interface PostUserResponse {
@@ -128,8 +131,43 @@ export class UsersService {
    * @returns obj with the deleted user
    */
 
-  public deleteUser(firstName: string, lastName: string, id: string) {
-    const deleteConfirmation = `User ${firstName} ${lastName} with the id ${id} deleted`;
+  public async deleteUser(id: string, user: IUrlReq) {
+    // the user that requests
+
+    const checkUserRequest = await this.userModel.find({ email: user.email });
+
+    // if the use ris admin can anyway delete the user
+    if (checkUserRequest[0]['role'] === 'admin') {
+      await this.userModel.findOneAndDelete({
+        email: user.email,
+      });
+      // delete
+      const deleteConfirmation = `User ${checkUserRequest[0]['firstName']} ${checkUserRequest[0]['lastName']} deleted!`;
+
+      return deleteConfirmation;
+    }
+
+    // if the user does not exist
+    if (!checkUserRequest) {
+      throw new HttpException(`Invalid user!`, 401);
+    }
+
+    // check the extracted id from email (token)
+    // with the request id
+    // and will be deleted
+    // easy effective double check
+    if (checkUserRequest[0]['_id'].toString() !== id.toString()) {
+      throw new HttpException(
+        `Invalid credentials for the requested operation!`,
+        401,
+      );
+    }
+
+    await this.userModel.findOneAndDelete({
+      email: user.email,
+    });
+    // delete
+    const deleteConfirmation = `User ${checkUserRequest[0]['firstName']} ${checkUserRequest[0]['lastName']} deleted!`;
 
     return deleteConfirmation;
   }
