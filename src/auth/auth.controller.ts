@@ -8,6 +8,10 @@ import {
   Req,
 } from '@nestjs/common';
 
+import { RequestUserDataDto, RequestUserToken } from '../dto/auth.dto';
+
+import { ApiBody, ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Public } from '../decorators/public.decorator';
@@ -29,8 +33,18 @@ export class AuthController {
    * @private
    * @return get user info based with the token
    */
+  // docs
+  @ApiTags('auth')
+  @ApiOperation({ summary: 'To get user data with the token' })
+  @ApiBody({ type: RequestUserDataDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Access to the route',
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
-  @UseGuards(JwtAuthGuard)
+  // route
+  @UseGuards(JwtAuthGuard) // returns user email
   @Get()
   public getUserData(@Request() req) {
     return this.authService.getUserData(req.user);
@@ -43,9 +57,18 @@ export class AuthController {
    * @return to get a token
    */
 
-  // TODO
-  // add type request
-  @Public()
+  // docs
+  @ApiTags('auth')
+  @ApiOperation({ summary: 'To login and get a token' })
+  @ApiBody({ type: RequestUserToken })
+  @ApiResponse({
+    status: 200,
+    description: 'Access to the route',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+
+  // Route
+  @Public() // to make it accesible
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {

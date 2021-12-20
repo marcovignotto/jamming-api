@@ -11,7 +11,15 @@ import {
   Request,
 } from '@nestjs/common';
 
-import apiVersion from '../../config/apiVersion';
+import {
+  ApiBody,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+
 import { JamsService } from './jams.service';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -19,6 +27,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // tdo
 import { CreateJamDto, UrlJamDto } from '../dto/jam.dto';
 
+import apiVersion from '../../config/apiVersion';
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
 
@@ -32,6 +41,18 @@ export class JamsController {
    * @private for users
    * @return returns all the current jams
    */
+  // docs
+  @ApiTags('jams')
+  @ApiOperation({ summary: 'To get all the jams' })
+  @ApiQuery({ name: 'all', required: false, type: Boolean })
+  @ApiResponse({
+    type: [CreateJamDto],
+    status: 200,
+    description: 'Access to the route',
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials!' })
+
+  //route
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Get()
   public getAllJams(@Query('all') all: boolean, @Request() req) {
@@ -47,9 +68,22 @@ export class JamsController {
    * @private
    * @return creates a jam
    */
+  // Docs
+  @ApiTags('jams')
+  @ApiOperation({ summary: 'To create a jam' })
+  @ApiBody({
+    type: CreateJamDto,
+  })
+  @ApiResponse({
+    type: CreateJamDto,
+    status: 200,
+    description: 'Access to the route',
+  })
+  @ApiResponse({ status: 400, description: 'Jam name already exists' })
+  @ApiResponse({ status: 400, description: 'Jam url already exists' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
-  // TODO
-  // ??? problem DTO
+  // Route
   @Post()
   public postJam(@Body() createJamDto: CreateJamDto | any) {
     return this.jamsService.postJam(createJamDto);
@@ -61,6 +95,28 @@ export class JamsController {
    * @private admin / user (owner)
    * @return updates jam
    */
+  // Docs
+  @ApiTags('jams')
+  @ApiOperation({ summary: 'To update a jam' })
+  @ApiParam({
+    name: 'url indentifier',
+    required: true,
+    description: 'The unique url of the jam',
+    example: 'jam-with-me',
+  })
+  @ApiBody({
+    type: CreateJamDto,
+  })
+  @ApiResponse({
+    type: CreateJamDto,
+    status: 200,
+    description: 'Access to the route',
+  })
+  @ApiResponse({ status: 400, description: 'Jam name already exists' })
+  @ApiResponse({ status: 400, description: 'Jam url already exists' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials!' })
+
+  // Route
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Put(':url')
   public updateJam(@Param('url') url: UrlJamDto, @Request() req) {
@@ -74,6 +130,23 @@ export class JamsController {
    * @private admin / user (owner)
    * @return deletes jam
    */
+  // Docs
+  @ApiTags('jams')
+  @ApiOperation({ summary: 'To delete a jam' })
+  @ApiParam({
+    name: 'url indentifier',
+    required: true,
+    description: 'The unique url of the jam',
+    example: 'jam-with-me',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'John Doe deleted the jam Jam with me',
+  })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials!' })
+
+  // Route
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Delete(':url')
   public deleteJam(@Param('url') url: UrlJamDto, @Request() req) {

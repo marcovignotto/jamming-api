@@ -112,6 +112,9 @@ export class UsersService {
       },
     );
 
+    if (!userUpdated) {
+      throw new HttpException(`Bad request`, 400);
+    }
     return userUpdated;
   }
 
