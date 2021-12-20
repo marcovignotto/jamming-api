@@ -24,8 +24,7 @@ export class AuthService {
 
   /**
    * @function getUserData
-   * @param token
-   * @desc to get the user data by a token
+   * @param user   * @desc to get the user data by a token
    * @returns the userdata
    */
   public async getUserData(user) {
@@ -47,10 +46,11 @@ export class AuthService {
    * @returns the token
    */
 
-  public async postToGetToken(
-    token: IResponseRequestToken,
-  ): Promise<IResponseRequestToken> {
-    return token;
+  async login(user: any) {
+    const payload = { email: user.email, sub: user.userId };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 
   /**
@@ -76,16 +76,5 @@ export class AuthService {
     }
 
     return user;
-  }
-
-  /**
-   * @desc middleware for login
-   */
-
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
   }
 }

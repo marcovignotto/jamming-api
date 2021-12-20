@@ -33,11 +33,11 @@ const objToReturn = {
 
 // class to mock functions
 class AuthServiceMock {
-  getUserData(token: IResponseRequestToken): PromiseCreateUserInterface {
+  getUserData(user): PromiseCreateUserInterface {
     return objToReturn;
   }
 
-  postToGetToken(bodyUserToken: IResponseRequestToken): IResponseRequestToken {
+  login(user: any): IResponseRequestToken {
     return token;
   }
 }
@@ -63,12 +63,12 @@ describe.skip('AuthService', () => {
   });
 
   it('getUserData() > user data', async () => {
-    const userData = await service.getUserData(token);
+    const userData = await service.getUserData(objTestUser);
     expect(userData).toBe(objToReturn);
   });
 
   it('postToGetToken() > token', async () => {
-    const tokenReq = await service.postToGetToken(token);
-    expect(tokenReq.token).toBe(token.token);
+    const tokenReq = await service.login('user');
+    expect(tokenReq.access_token).toBe(token.token);
   });
 });
