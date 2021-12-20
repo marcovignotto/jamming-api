@@ -10,13 +10,9 @@ import { Model, Schema } from 'mongoose';
 import { UserSchema } from '../schemas/user.schema';
 
 // interfaces
-import {
-  CreateUserInterface,
-  PromiseCreateUserInterface,
-  IUser,
-} from '../interfaces/user.interfaces';
+import { IUser } from '../interfaces/user.interfaces';
 
-import { IJam } from '../interfaces/jam.interfaces';
+import { IJam, IUrlJam, IUrlReq } from '../interfaces/jam.interfaces';
 
 @Injectable()
 export class JamsService {
@@ -30,14 +26,14 @@ export class JamsService {
    * @desc to get all the jams
    * @returns array of available jam
    */
-  public async getAllJams(all, user): Promise<object[]> {
-    // if true the user request all  the jams
+  public async getAllJams(all: boolean, user): Promise<object[]> {
+    // if true the user request all the jams
     // NOT jsut the ones avaible based on the instrument
     if (all) {
       const allJams = await this.jamModel
         .find()
         // select just some fields
-        .populate('host', 'firstName lastName instrument -_id')
+        .populate('host', 'firstName lastName instrument -_id') //
         .populate('joinedPlayers', 'firstName lastName instrument -_id');
       return allJams;
     }
@@ -57,7 +53,7 @@ export class JamsService {
         availableInstruments: findPlayer.instrument,
       })
       // select just some fields
-      .populate('host', 'firstName lastName instrument -_id')
+      .populate('host', 'firstName lastName instrument -_id') //
       .populate('joinedPlayers', 'firstName lastName instrument -_id');
 
     return avaibleJams;
@@ -127,7 +123,7 @@ export class JamsService {
    * @returns obj with the updated jam
    */
 
-  public async updateJam(url, user) {
+  public async updateJam(url: IUrlJam, user: IUrlReq): Promise<IJam> {
     try {
       // find the jam with the url
       const jamToJoin = await this.jamModel.findOne({ jamUrl: url });
@@ -160,13 +156,13 @@ export class JamsService {
             // 3. availableInstruments: remove the instrument from the array
             $pull: { availableInstruments: userToJoin.instrument },
 
-            // 4. playersLeft: totalNumberOfPlayers - joinedPlayers
             $set: {
+              // 4. playersLeft: totalNumberOfPlayers - joinedPlayers
               playersLeft:
                 jamToJoin.totalNumberOfPlayers -
                 (jamToJoin.joinedPlayers.length + 1), // add cause in the first round the value is not updated yet
-              // started: playersLeft +1 === 0 ? true : false
-              started: jamToJoin.playersLeft - 1 === 0 ? true : false,
+              // 5. started: playersLeft - 1 === 0 ? true : false
+              started: jamToJoin.playersLeft - 1 === 0 ? true : false, // remove one cause is not updated
             },
           },
           { new: true },
@@ -186,7 +182,26 @@ export class JamsService {
    * @returns string with the deleted jam
    */
 
-  public deleteJam() {
-    return 'Delete JAM';
+  public async deleteJam(url: IUrlJam, user: IUrlReq): Promise<string> {
+    // the user that requests
+    const checkUserRequest = await this.userModel.find({ email: user.email });
+
+    // the requested jam
+    const findJam = await this.jamModel.findOne({ jamUrl: url });
+
+    // check if the user is the jam's host
+    // compare the jam's host is with the user id
+    if (checkUserRequest[0]['_id'].toString() !== findJam.host.toString()) {
+      throw new HttpException(
+        `Invalid credentials for the requested operation!`,
+        401,
+      );
+    }
+
+    const jamToDelete = await this.jamModel.findOneAndDelete({
+      jamUrl: url,
+    });
+    // delete
+    return `${checkUserRequest[0]['firstName']} ${checkUserRequest[0]['lastName']} deleted the jam ${jamToDelete['jamName']}`;
   }
 }

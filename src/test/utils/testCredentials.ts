@@ -32,7 +32,7 @@ export const credentialUserGeneral = (): object => {
 
 // bob dylan
 const userBobDylan = {
-  firstName: 'Bod',
+  firstName: 'Bob',
   lastName: 'Dylan',
   email: 'bobdylan@gmail.com',
   password: '12345678',

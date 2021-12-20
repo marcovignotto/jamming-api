@@ -40,7 +40,7 @@ class JamsServiceMock {
   updateJam(url, user): object {
     return testUpdateJamObj;
   }
-  deleteJam(): string {
+  deleteJam(url, user): string {
     return testDeleteJamString;
   }
 }
@@ -87,14 +87,20 @@ describe.skip('JamsService', () => {
   it('updateJam()  > jam obj updated', () => {
     const expectedResult = testUpdateJamObj;
 
-    const res = service.updateJam('jam-url', { email: 'email@gmail.com' });
+    const res = service.updateJam(
+      { url: 'jam-url' },
+      { email: 'email@gmail.com' },
+    );
 
     expect(res).toBe(expectedResult);
   });
   it('deleteJam() > string deletion', () => {
     const expectedResult = testDeleteJamString;
 
-    const res = service.deleteJam();
+    const res = service.deleteJam(
+      { url: 'jam-url' },
+      { email: 'email@gmail.com' },
+    );
 
     expect(res).toBe(expectedResult);
   });

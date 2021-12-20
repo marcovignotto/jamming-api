@@ -344,7 +344,7 @@ describe('AppController (e2e)', () => {
 
     // having just one jam
     // if the user that created the jam does not have the instrument avaible
-    it('GET without query all > 200 and all JUST the jams avaible for the player [] length 0', async () => {
+    it('GET WITHOUT query all > 200 and all JUST the jams avaible for the player [] length 0', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamHost)
@@ -360,7 +360,7 @@ describe('AppController (e2e)', () => {
     // now Joni Mitchel makes request
     // must return the available jam cause "Voice" is still available
 
-    it('GET - without query all > 200 and all JUST the jams avaible for the player [] length 1', async () => {
+    it('GET - WITHOUT query all > 200 and all JUST the jams avaible for the player [] length 1', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamPlayerOne)
@@ -563,7 +563,40 @@ describe('AppController (e2e)', () => {
       // use returned values
       expect(Number(req.length)).toBe(0);
     });
+
+    // the player accidentaly tries to delete the jam but can't
+    it('DELETE > 401 the player is NOT the host ', async () => {
+      const req = await request(app.getHttpServer())
+        .delete(PATH_JAMS + '/' + jamToJoinUrl)
+        .set('Authorization', 'Bearer ' + tokenYokoOno())
+        .expect(401)
+        .then((res) => JSON.parse(res.text));
+
+      expect.assertions(1);
+
+      expect(req.message).toContain(
+        'Invalid credentials for the requested operation!',
+      );
+    });
+
+    // Bod Dylan deletes the jam
+
+    it('DELETE > 200 and delete confirmation ', async () => {
+      const req = await request(app.getHttpServer())
+        .delete(PATH_JAMS + '/' + jamToJoinUrl)
+        .set('Authorization', 'Bearer ' + tokenBodDylan())
+        .expect(200)
+        .then((res) => res.text);
+
+      expect.assertions(4);
+
+      expect(req).toContain(credentialBobDylan()['firstName']);
+      expect(req).toContain(credentialBobDylan()['lastName']);
+      expect(req).toContain('deleted');
+      expect(req).toContain('the jam');
+    });
   });
+
   afterAll(async () => {
     await app.close();
   });

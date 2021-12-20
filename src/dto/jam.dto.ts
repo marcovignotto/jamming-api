@@ -16,6 +16,6 @@ export class CreateJamDto {
   readonly createdAt?: Date;
 }
 
-export class UrlJam {
+export class UrlJamDto {
   readonly url: string;
 }

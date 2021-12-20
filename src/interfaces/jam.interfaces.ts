@@ -17,3 +17,12 @@ export interface IJam {
   startingDate?: Date;
   createdAt?: Date;
 }
+
+export interface IUrlJam {
+  url: string;
+}
+
+export interface IUrlReq {
+  email: string;
+  userId?: string;
+}

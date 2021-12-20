@@ -17,7 +17,7 @@ import { JamsService } from './jams.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 // tdo
-import { CreateJamDto, UrlJam } from '../dto/jam.dto';
+import { CreateJamDto, UrlJamDto } from '../dto/jam.dto';
 
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
@@ -34,7 +34,7 @@ export class JamsController {
    */
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Get()
-  public getAllJams(@Query('all') all, @Request() req) {
+  public getAllJams(@Query('all') all: boolean, @Request() req) {
     // forward query all and email
     // to return all the values or jsut the matching bassed on the user
 
@@ -63,7 +63,7 @@ export class JamsController {
    */
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Put(':url')
-  public updateJam(@Param('url') url: UrlJam, @Request() req) {
+  public updateJam(@Param('url') url: UrlJamDto, @Request() req) {
     // forward the url to the func
     return this.jamsService.updateJam(url, req.user);
   }
@@ -74,8 +74,9 @@ export class JamsController {
    * @private admin / user (owner)
    * @return deletes jam
    */
-  @Delete()
-  public deleteJam() {
-    return this.jamsService.deleteJam();
+  @UseGuards(JwtAuthGuard) // needed to get user's email
+  @Delete(':url')
+  public deleteJam(@Param('url') url: UrlJamDto, @Request() req) {
+    return this.jamsService.deleteJam(url, req.user);
   }
 }
