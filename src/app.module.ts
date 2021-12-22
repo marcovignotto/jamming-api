@@ -45,6 +45,7 @@ const ENV = process.env.NODE_ENV;
         // uri: configService.get<string>('MONGODB_URI'),
         uri: process.env.MONGODB_URI,
         // uri: 'mongodb://localhost/jamming',
+        // uri: 'mongodb://root:pass12345@mongodb',
       }),
       // inject: [ConfigService],
     }),

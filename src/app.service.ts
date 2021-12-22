@@ -20,18 +20,22 @@ export class AppService {
         );
       } else {
         // log production db
-        console.log('MongoDb Connected');
+        console.log(`MongoDb Connected to ${process.env.MONGODB_URI}`);
       }
     });
     this.connection.on('disconnected', () => {
       // log development db
       if (ENV === 'development') {
-        console.log(`MongoDb Disconnected from development db`);
+        console.log(
+          `MongoDb Disconnected from development db: ${process.env.MONGODB_URI}`,
+        );
       } else if (ENV === 'testing') {
-        console.log(`MongoDb Disconnected from testing db`);
+        console.log(
+          `MongoDb Disconnected from testing db: ${process.env.MONGODB_URI}`,
+        );
       } else {
         // log production db
-        console.log('MongoDb Disconnected');
+        console.log(`MongoDb Disconnected from: ${process.env.MONGODB_URI}`);
       }
     });
   }
