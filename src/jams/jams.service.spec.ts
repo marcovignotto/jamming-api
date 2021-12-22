@@ -56,7 +56,7 @@ describe('JamsService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forRoot('mongodb://localhost/jammingTestDb'),
+        MongooseModule.forRoot(process.env.MONGODB_URI),
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
         MongooseModule.forFeature([{ name: 'Jam', schema: JamSchema }]),
       ],

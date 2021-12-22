@@ -52,17 +52,13 @@ import { Connection } from 'mongoose';
 
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 
-//TODO
-// inseet ENV
-// console.log('process.env.MONGODB_URI', process.env.MONGODB_URI);
-
 describe('AppController', () => {
   let appController: AppController;
   let connection: Connection;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [MongooseModule.forRoot('mongodb://localhost/jammingTestDb')],
+      imports: [MongooseModule.forRoot(process.env.MONGODB_URI)],
       controllers: [AppController],
       providers: [AppService],
     }).compile();

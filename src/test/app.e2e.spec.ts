@@ -248,7 +248,7 @@ describe('AppController (e2e)', () => {
   // one creates the jam for 4 players  in total and other 3 join
   // one arrives late and can't join
 
-  describe.skip('Create users for the /jams test', () => {
+  describe('Create users for the /jams test', () => {
     // players to create into array
     const arrayOfPlayers = [
       credentialBobDylan(),
@@ -467,8 +467,10 @@ describe('AppController (e2e)', () => {
 
       expect.assertions(1);
 
-      // use returned values
-      expect(Number(req.length)).toBe(0);
+      setTimeout(() => {
+        // use returned values
+        expect(Number(req.length)).toBe(0);
+      }, 500);
     });
 
     // Yoko Ono is stubborn and makes request with all=true
@@ -481,24 +483,26 @@ describe('AppController (e2e)', () => {
         .expect(200)
         .then((res) => res.body);
 
-      expect.assertions(5);
+      setTimeout(() => {
+        expect.assertions(5);
 
-      // check if mongo populate works
+        // check if mongo populate works
 
-      // use returned values
-      expect(Number(req.length)).toBe(1);
-      // two players already joined
-      expect(req[0].joinedPlayers.length).toBe(2);
-      // check the name of the player 1 (host)
-      expect(req[0].joinedPlayers[0].firstName).toBe(
-        credentialBobDylan()['firstName'],
-      );
-      // check the name of the player 2
-      expect(req[0].joinedPlayers[1].firstName).toBe(
-        credentialJoniMitchell()['firstName'],
-      );
-      // host
-      expect(req[0].host.firstName).toBe(credentialBobDylan()['firstName']);
+        // use returned values
+        expect(Number(req.length)).toBe(1);
+        // two players already joined
+        expect(req[0].joinedPlayers.length).toBe(2);
+        // check the name of the player 1 (host)
+        expect(req[0].joinedPlayers[0].firstName).toBe(
+          credentialBobDylan()['firstName'],
+        );
+        // check the name of the player 2
+        expect(req[0].joinedPlayers[1].firstName).toBe(
+          credentialJoniMitchell()['firstName'],
+        );
+        // host
+        expect(req[0].host.firstName).toBe(credentialBobDylan()['firstName']);
+      }, 2000);
     });
 
     // now Neil Young makes request

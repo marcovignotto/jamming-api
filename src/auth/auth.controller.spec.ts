@@ -12,7 +12,7 @@ describe.skip('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forRoot('mongodb://localhost/jammingTestDb'),
+        MongooseModule.forRoot(process.env.MONGODB_URI),
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
         JwtModule.register({
           secret: process.env.JWT_SECRET,

@@ -9,11 +9,12 @@ ENV PORT=5000 \
     MONGODB_URI=mongodb://root:pass12345@mongodb \
     JWT_SECRET=hk4f1h7al8hd.fjh019fdl34kh3234dhf3h1ds22
  
-
 #  Navigate to the container working directory 
 WORKDIR /usr/src/app
 # #  Copy package.json
 COPY package*.json ./
+
+
 
 RUN npm install glob rimraf
 RUN npm install --only=development
