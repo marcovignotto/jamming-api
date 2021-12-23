@@ -53,8 +53,6 @@ import { Connection } from 'mongoose';
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import { DatabaseModule } from './database/database.module';
 
-console.log('MONGODB_URI', process.env.MONGODB_URI);
-
 describe.skip('AppController', () => {
   let appController: AppController;
   let connection: Connection;

@@ -101,8 +101,8 @@ export class UsersController {
   // route
   @Put(':id')
   public updateUser(
-    @Body() updateUserDto: CreateUserDto,
     @Param('id') id: string,
+    @Body() updateUserDto: CreateUserDto,
   ) {
     return this.usersService.updateUser(id, updateUserDto);
   }

@@ -7,8 +7,6 @@ import { AuthService } from './auth.service';
 import { UserSchema } from '../schemas/user.schema';
 import { DatabaseModule } from '../database/database.module';
 
-console.log('AUT H CRTRK', process.env.MONGODB_URI);
-
 describe.skip('AuthController', () => {
   let controller: AuthController;
 
