@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 
 import * as request from 'supertest';
 import { AppModule } from '../app.module';
@@ -23,6 +24,7 @@ import {
 } from './utils/testCredentials';
 
 import apiVersion from '../../config/apiVersion';
+import { DatabaseService } from '../database/database.service';
 
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
@@ -37,7 +39,8 @@ const PATH_USERS = API_VERSION + '/users';
 const PATH_AUTH = API_VERSION + '/auth';
 const PATH_JAMS = API_VERSION + '/jams';
 
-describe('AppController (e2e)', () => {
+describe.skip('AppController (e2e)', () => {
+  let connectionMongoDb: Connection;
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -49,6 +52,10 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     // init the app
     await app.init();
+
+    connectionMongoDb = moduleFixture
+      .get<DatabaseService>(DatabaseService)
+      .connectMongoDB();
   });
 
   // complete flow of user get create update delete

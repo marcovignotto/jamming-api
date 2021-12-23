@@ -14,6 +14,7 @@ import { JamsModule } from './jams/jams.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { SetMetadata } from '@nestjs/common';
+import { DatabaseModule } from './database/database.module';
 
 // export const IS_PUBLIC_KEY = 'isPublic';
 // export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -24,38 +25,41 @@ const getEnv = async () => {
 };
 
 const ENV = process.env.NODE_ENV;
-
+// console.log('APP MODULE', ENV);
 //TODO
 // create a globconfig for the env
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
+      // envFilePath: !ENV ? '.env' : `.env.${ENV}`,
       isGlobal: true,
-      load: [configEnvVars],
+      // load: [configEnvVars],
     }),
+    DatabaseModule,
     // MongooseModule.forRoot(process.env.MONGODB_URI),
     // TODO
     // ! Clean
     // MongooseModule.forRoot('mongodb://localhost/jamming'),
-    MongooseModule.forRootAsync({
-      // imports: [ConfigModule],
-      useFactory: async () => ({
-        // uri: configService.get<string>('MONGODB_URI'),
-        uri: process.env.MONGODB_URI,
-        // uri: 'mongodb://localhost/jamming',
-        // uri: 'mongodb://root:pass12345@mongodb',
-      }),
-      // inject: [ConfigService],
-    }),
+    // MongooseModule.forRootAsync({
+    //   // imports: [ConfigModule],
+    //   useFactory: async () => ({
+    //     // uri: configService.get<string>('MONGODB_URI'),
+    //     uri: process.env.MONGODB_URI,
+    //     // uri: 'mongodb://localhost/jamming',
+    //     // uri: 'mongodb://root:pass12345@mongodb',
+    //   }),
+    //   // inject: [ConfigService],
+    // }),
     AuthModule,
     UsersModule,
     JamsModule,
   ],
-  controllers: [AppController],
+  controllers: [
+    // AppController
+  ],
   providers: [
-    AppService,
+    // AppService,
     // protect all the routes
     {
       provide: APP_GUARD,

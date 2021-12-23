@@ -7,13 +7,17 @@ import { JamsService } from './jams.service';
 import { UserSchema } from '../schemas/user.schema';
 import { JamSchema } from '../schemas/jam.schema';
 
-describe('JamsController', () => {
+import { DatabaseModule } from '../database/database.module';
+
+describe.skip('JamsController', () => {
   let controller: JamsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forRoot(process.env.MONGODB_URI),
+        // DatabaseModule,
+        MongooseModule.forRoot('mongodb://localhost/newTest'),
+
         MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
         MongooseModule.forFeature([{ name: 'Jam', schema: JamSchema }]),
       ],
