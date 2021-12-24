@@ -4,7 +4,7 @@
  */
 
 // creates an admin
-import { UserSchema } from '../../../schemas/user.schema';
+import { UserSchema } from '../../schemas/user.schema';
 
 export const tokenUserAdmin = () =>
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImphbmVkb2VAZ21haWwuY29tIiwiaWF0IjoxNjQwMDAwMjExLCJleHAiOjE2NDUxODQyMTF9.JbGlwR1XfnZ_tSGI1uvFjSIC0zVmhr60DfHAM9jPuGM';

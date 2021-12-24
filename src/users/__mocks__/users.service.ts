@@ -3,7 +3,7 @@
 import {
   credentialUserAdmin,
   credentialUserGeneral,
-} from '../test/stubs/user.stub';
+} from '../../test/stubs/users.stubs';
 
 export const UsersService = jest.fn().mockReturnValue({
   getAllUsers: jest.fn().mockResolvedValue([credentialUserGeneral()]),

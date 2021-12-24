@@ -9,13 +9,13 @@ import { JamSchema } from '../../schemas/jam.schema';
 import {
   credentialUserGeneral,
   credentialUserAdmin,
-} from '../test/stubs/user.stub';
+} from '../../test/stubs/users.stubs';
 
 // mock the service
 jest.mock('../users.service.ts');
 
 // objs
-
+// post
 const objUserPost = {
   firstName: credentialUserGeneral()['firstName'],
   lastName: credentialUserGeneral()['lastName'],
@@ -24,7 +24,7 @@ const objUserPost = {
   instrument: credentialUserGeneral()['instrument'],
   role: credentialUserGeneral()['role'],
 };
-
+// update
 const objUserUpdate = {
   firstName: credentialUserAdmin()['firstName'],
   lastName: credentialUserAdmin()['lastName'],
@@ -93,9 +93,6 @@ describe('UsersController', () => {
     });
   });
 
-  // updateUser;
-  // deleteUser;
-
   describe('updateUser', () => {
     describe('When updateUser', () => {
       // vars
@@ -123,10 +120,17 @@ describe('UsersController', () => {
 
       // call the controller
       beforeEach(async () => {
-        user = await usersController.deleteUser('fakeId', objUserUpdate);
+        // takes req {user: {...}}
+        user = await usersController.deleteUser('fakeId', {
+          user: {
+            email: credentialUserGeneral()['email'],
+            userId: 'string',
+          },
+        });
       });
 
       test('then it should call updateUser', () => {
+        // returns the req.user {email:...}
         expect(usersService.deleteUser).toBeCalledWith('fakeId', {
           email: credentialUserGeneral()['email'],
           userId: 'string',
