@@ -46,8 +46,8 @@ export class AuthController {
   // route
   @UseGuards(JwtAuthGuard) // returns user email
   @Get()
-  public getUserData(@Request() req) {
-    return this.authService.getUserData(req.user);
+  public getUserData(@Request() req: RequestUserDataDto) {
+    return this.authService.getUserData(req);
   }
 
   /**
@@ -71,7 +71,7 @@ export class AuthController {
   @Public() // to make it accesible
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Request() req: RequestUserToken) {
+    return this.authService.login(req);
   }
 }
