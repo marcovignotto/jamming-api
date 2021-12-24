@@ -3,8 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '../users.controller';
 import { UsersService } from '../users.service';
 
-import { UserSchema } from '../../schemas/user.schema';
-import { JamSchema } from '../../schemas/jam.schema';
+import { User } from '../../schemas/user.schema';
+import { Jam } from '../../schemas/jam.schema';
 
 import {
   credentialUserGeneral,
@@ -56,7 +56,8 @@ describe('UsersController', () => {
 
   describe('getAllUsers', () => {
     describe('When getAllUsers is called', () => {
-      let users: object[];
+      // assign model
+      let users: User[];
 
       //  call with the controller
       beforeEach(async () => {
@@ -75,8 +76,8 @@ describe('UsersController', () => {
 
   describe('postUser', () => {
     describe('When postUser', () => {
-      // vars
-      let user: object;
+      // assign model
+      let user: User;
 
       // call the controller
       beforeEach(async () => {
@@ -95,8 +96,8 @@ describe('UsersController', () => {
 
   describe('updateUser', () => {
     describe('When updateUser', () => {
-      // vars
-      let user: object;
+      // assign model
+      let user: User;
 
       // call the controller
       beforeEach(async () => {
@@ -115,7 +116,7 @@ describe('UsersController', () => {
 
   describe('deleteUser', () => {
     describe('When deleteUser', () => {
-      // vars
+      // assign model
       let user: string;
 
       // call the controller

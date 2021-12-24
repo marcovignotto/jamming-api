@@ -22,8 +22,8 @@ export class User {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: String, required: true })
-  userCode: string;
+  @Prop({ type: String, required: false })
+  userCode?: string;
 
   @Prop({ type: String, required: true })
   instrument: string;
@@ -32,7 +32,7 @@ export class User {
   role: string;
 
   @Prop({ type: Date, default: Date.now })
-  createdAt: string;
+  createdAt?: string;
 
   // reference to give the current jam attended b the user
   @Prop({
@@ -40,7 +40,7 @@ export class User {
     required: false,
     ref: 'Jam',
   })
-  currentJam: Jam;
+  currentJam?: Jam;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -25,9 +25,14 @@ import { Public } from '../decorators/public.decorator';
 import { UsersService } from './users.service';
 
 // DTOs
-import { CreateUserDto, PromiseCreateUserDto } from '../dto/user.dto';
+import {
+  CreateUserDto,
+  PromiseCreateUserDto,
+  UpdateUserDto,
+} from '../dto/user.dto';
 
 import apiVersion from '../../config/apiVersion';
+import { User } from 'src/schemas/user.schema';
 
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
@@ -53,7 +58,7 @@ export class UsersController {
 
   //route
   @Get()
-  public getAllUsers() {
+  public getAllUsers(): Promise<User[]> {
     return this.usersService.getAllUsers();
   }
 
@@ -67,7 +72,7 @@ export class UsersController {
   @ApiTags('users')
   @ApiOperation({ summary: 'To create a user' })
   @ApiResponse({
-    type: PromiseCreateUserDto,
+    type: UpdateUserDto,
     status: 201,
     description: 'Access to the route',
   })
@@ -77,7 +82,7 @@ export class UsersController {
   // route
   @Public()
   @Post()
-  public postUser(@Body() createUserDto: CreateUserDto) {
+  public postUser(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.postUser(createUserDto);
   }
 
@@ -91,7 +96,7 @@ export class UsersController {
   @ApiTags('users')
   @ApiOperation({ summary: 'To update a users' })
   @ApiResponse({
-    type: PromiseCreateUserDto,
+    type: UpdateUserDto,
     status: 200,
     description: 'Access to the route',
   })
@@ -102,8 +107,8 @@ export class UsersController {
   @Put(':id')
   public updateUser(
     @Param('id') id: string,
-    @Body() updateUserDto: CreateUserDto,
-  ) {
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
     return this.usersService.updateUser(id, updateUserDto);
   }
 
@@ -126,7 +131,7 @@ export class UsersController {
   // route
   @UseGuards(JwtAuthGuard) // needed to get user's email and check the owner or admin
   @Delete(':id')
-  public deleteUser(@Param('id') id: string, @Request() req) {
+  public deleteUser(@Param('id') id: string, @Request() req): Promise<string> {
     // forward user id and user data
     return this.usersService.deleteUser(id, req.user);
   }

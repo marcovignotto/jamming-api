@@ -18,6 +18,8 @@ import {
 // interfaces
 import { IUrlReq } from '../interfaces/jam.interfaces';
 
+import { User, UserDocument } from 'src/schemas/user.schema';
+
 //TODO
 // external Interfaces
 export interface PostUserResponse {
@@ -45,9 +47,11 @@ export interface DeleteUserResponse {
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<UserDocument>,
+  ) {}
 
-  public async getAllUsers(): Promise<object[]> {
+  public async getAllUsers(): Promise<User[]> {
     const getAllUsersFromDb = await this.userModel.find();
 
     return getAllUsersFromDb;
@@ -59,9 +63,7 @@ export class UsersService {
    * @returns obj witrh the created user
    */
 
-  public async postUser(
-    obj: CreateUserInterface,
-  ): Promise<PromiseCreateUserInterface> {
+  public async postUser(obj: CreateUserInterface): Promise<User> {
     // destruc
     const { email, password } = obj;
 
@@ -98,11 +100,13 @@ export class UsersService {
    * @returns obj with the updated user
    */
 
+  // TODO
   public async updateUser(
     id: string,
     //     id: Schema.Types.ObjectId,
-    obj: CreateUserInterface,
-  ): Promise<PromiseCreateUserInterface> {
+    // obj: CreateUserInterface,
+    obj: User,
+  ): Promise<User> {
     // find and update using the mongo _id
     const userUpdated = await this.userModel.findOneAndUpdate(
       { _id: id },
@@ -115,6 +119,7 @@ export class UsersService {
     if (!userUpdated) {
       throw new HttpException(`Bad request`, 400);
     }
+
     return userUpdated;
   }
 
@@ -124,7 +129,7 @@ export class UsersService {
    * @returns obj with the deleted user
    */
 
-  public async deleteUser(id: string, user: IUrlReq) {
+  public async deleteUser(id: string, user: IUrlReq): Promise<string> {
     // the user that requests
 
     const checkUserRequest = await this.userModel.find({ email: user.email });

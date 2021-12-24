@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from '../schemas/user.schema';
 
 export class CreateJamDto {
   @ApiProperty({
@@ -26,13 +27,15 @@ export class CreateJamDto {
     description: 'Host Name',
     example: '{firstName: "John", lastName: "Doe",...}',
   })
-  readonly host?: string;
+  readonly host?: User;
+
   @ApiProperty({
     description: 'The players',
     example:
       '[{firstName: "John", lastName: "Doe", instrument: "Guitar"}, ...]',
   })
-  readonly joinedPlayers?: string[];
+  readonly joinedPlayers?: User[];
+
   @ApiProperty({
     description: 'Instruments for the jam',
     example: '["Guitar", "Sax", "Drum",...]',
