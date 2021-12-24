@@ -22,7 +22,7 @@ const testLogin = {
 // the AuthService contains also validateUser
 // but is tested through getUSerData
 
-describe.skip('AuthController', () => {
+describe('AuthController', () => {
   let controller: AuthController;
   let service: AuthService;
 

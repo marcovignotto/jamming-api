@@ -8,7 +8,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 
 // models
-import { UserSchema } from '../schemas/user.schema';
+import { User } from '../schemas/user.schema';
+import { Jam } from '../schemas/jam.schema';
 
 // interfaces
 import { IUser } from '../interfaces/user.interfaces';
@@ -18,8 +19,8 @@ import { IJam, IUrlJam, IUrlReq } from '../interfaces/jam.interfaces';
 @Injectable()
 export class JamsService {
   constructor(
-    @InjectModel('User') private readonly userModel: Model<IUser>,
-    @InjectModel('Jam') private readonly jamModel: Model<IJam>,
+    @InjectModel('User') private readonly userModel: Model<User>,
+    @InjectModel('Jam') private readonly jamModel: Model<Jam>,
   ) {}
 
   /**
@@ -27,7 +28,7 @@ export class JamsService {
    * @desc to get all the jams
    * @returns array of available jam
    */
-  public async getAllJams(all: boolean, user): Promise<object[]> {
+  public async getAllJams(all: boolean, user): Promise<Jam[]> {
     // if true the user request all the jams
     // NOT jsut the ones avaible based on the instrument
     if (all) {
@@ -66,7 +67,7 @@ export class JamsService {
    * @returns obj with the created jam
    */
 
-  public async postJam(jamToCreate: IJam): Promise<IJam> {
+  public async postJam(jamToCreate: Jam): Promise<Jam> {
     // convert name to url with slugfy
     const newJamUrl = slugify(jamToCreate.jamName.toString(), {
       lower: true,
@@ -91,7 +92,7 @@ export class JamsService {
 
     // find host
     const jamHost = await this.userModel.findOne({
-      email: jamToCreate.hostEmail,
+      email: jamToCreate['hostEmail'],
     });
 
     // generate jam code
@@ -125,7 +126,7 @@ export class JamsService {
    * @returns obj with the updated jam
    */
 
-  public async updateJam(url: IUrlJam, user: IUrlReq): Promise<IJam> {
+  public async updateJam(url: string, user: IUrlReq): Promise<Jam> {
     // find the jam with the url
     const jamToJoin = await this.jamModel.findOne({ jamUrl: url });
     // check if exists
@@ -163,7 +164,7 @@ export class JamsService {
               jamToJoin.totalNumberOfPlayers -
               (jamToJoin.joinedPlayers.length + 1), // add cause in the first round the value is not updated yet
             // 5. started: playersLeft - 1 === 0 ? true : false
-            started: jamToJoin.playersLeft - 1 === 0 ? true : false, // remove one cause is not updated
+            started: Number(jamToJoin.playersLeft) - 1 === 0 ? true : false, // remove one cause is not updated
           },
         },
         { new: true },
@@ -179,7 +180,7 @@ export class JamsService {
    * @returns string with the deleted jam
    */
 
-  public async deleteJam(url: IUrlJam, user: IUrlReq): Promise<string> {
+  public async deleteJam(url: string, user: IUrlReq): Promise<string> {
     // the user that requests
     const checkUserRequest = await this.userModel.find({ email: user.email });
 

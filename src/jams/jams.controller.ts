@@ -28,6 +28,9 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateJamDto, UrlJamDto } from '../dto/jam.dto';
 
 import apiVersion from '../../config/apiVersion';
+
+import { Jam } from '../schemas/jam.schema';
+
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
 
@@ -55,7 +58,10 @@ export class JamsController {
   //route
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Get()
-  public getAllJams(@Query('all') all: boolean, @Request() req) {
+  public getAllJams(
+    @Query('all') all: boolean,
+    @Request() req,
+  ): Promise<Jam[]> {
     // forward query all and email
     // to return all the values or jsut the matching bassed on the user
 
@@ -85,7 +91,7 @@ export class JamsController {
 
   // Route
   @Post()
-  public postJam(@Body() createJamDto: CreateJamDto | any) {
+  public postJam(@Body() createJamDto: CreateJamDto | any): Promise<Jam> {
     return this.jamsService.postJam(createJamDto);
   }
 
@@ -119,7 +125,7 @@ export class JamsController {
   // Route
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Put(':url')
-  public updateJam(@Param('url') url: UrlJamDto, @Request() req) {
+  public updateJam(@Param('url') url: string, @Request() req): Promise<Jam> {
     // forward the url to the func
     return this.jamsService.updateJam(url, req.user);
   }
@@ -149,7 +155,7 @@ export class JamsController {
   // Route
   @UseGuards(JwtAuthGuard) // needed to get user's email
   @Delete(':url')
-  public deleteJam(@Param('url') url: UrlJamDto, @Request() req) {
+  public deleteJam(@Param('url') url: string, @Request() req): Promise<string> {
     return this.jamsService.deleteJam(url, req.user);
   }
 }

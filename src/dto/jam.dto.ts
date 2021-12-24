@@ -16,7 +16,7 @@ export class CreateJamDto {
     description: 'Url converted from the name',
     example: 'jam-with-me',
   })
-  readonly jamUrl: string;
+  readonly jamUrl?: string;
   @ApiProperty({
     description: 'Code',
     example: 'sdsdsdasds',

@@ -33,10 +33,10 @@ const objUserUpdate = {
   role: credentialUserAdmin()['role'],
 };
 
-describe.skip('UsersController', () => {
+describe('UsersController', () => {
   // set controller and service
-  let usersController: UsersController;
-  let usersService: UsersService;
+  let controller: UsersController;
+  let service: UsersService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,8 +45,8 @@ describe.skip('UsersController', () => {
       providers: [UsersService],
     }).compile();
 
-    usersController = module.get<UsersController>(UsersController);
-    usersService = module.get<UsersService>(UsersService);
+    controller = module.get<UsersController>(UsersController);
+    service = module.get<UsersService>(UsersService);
 
     // clear mocks
     // clear before each test
@@ -60,11 +60,11 @@ describe.skip('UsersController', () => {
 
       //  call with the controller
       beforeEach(async () => {
-        users = await usersController.getAllUsers();
+        users = await controller.getAllUsers();
       });
       // check if the functions are called by the cotrnoller
       test('then it should call getAllUsers', () => {
-        expect(usersService.getAllUsers).toBeCalled();
+        expect(service.getAllUsers).toBeCalled();
       });
 
       test('then it should return an array', () => {
@@ -80,11 +80,11 @@ describe.skip('UsersController', () => {
 
       // call the controller
       beforeEach(async () => {
-        user = await usersController.postUser(objUserPost);
+        user = await controller.postUser(objUserPost);
       });
 
       test('then it should call postUser', () => {
-        expect(usersService.postUser).toBeCalledWith(objUserPost);
+        expect(service.postUser).toBeCalledWith(objUserPost);
       });
 
       test('then it should return the user', () => {
@@ -100,11 +100,11 @@ describe.skip('UsersController', () => {
 
       // call the controller
       beforeEach(async () => {
-        user = await usersController.updateUser('fakeId', objUserUpdate);
+        user = await controller.updateUser('fakeId', objUserUpdate);
       });
 
       test('then it should call updateUser', () => {
-        expect(usersService.updateUser).toBeCalledWith('fakeId', objUserUpdate);
+        expect(service.updateUser).toBeCalledWith('fakeId', objUserUpdate);
       });
 
       test('then it should return the user', () => {
@@ -121,7 +121,7 @@ describe.skip('UsersController', () => {
       // call the controller
       beforeEach(async () => {
         // takes req {user: {...}}
-        user = await usersController.deleteUser('fakeId', {
+        user = await controller.deleteUser('fakeId', {
           user: {
             email: credentialUserGeneral()['email'],
             userId: 'string',
@@ -131,7 +131,7 @@ describe.skip('UsersController', () => {
 
       test('then it should call updateUser', () => {
         // returns the req.user {email:...}
-        expect(usersService.deleteUser).toBeCalledWith('fakeId', {
+        expect(service.deleteUser).toBeCalledWith('fakeId', {
           email: credentialUserGeneral()['email'],
           userId: 'string',
         });
