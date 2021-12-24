@@ -21,7 +21,7 @@ import {
   tokenJohnColtrane,
   tokenJoniMitchell,
   tokenYokoOno,
-} from './utils/testCredentials';
+} from './stubs/users.stubs';
 
 import apiVersion from '../../config/apiVersion';
 import { DatabaseService } from '../database/database.service';
@@ -39,7 +39,7 @@ const PATH_USERS = API_VERSION + '/users';
 const PATH_AUTH = API_VERSION + '/auth';
 const PATH_JAMS = API_VERSION + '/jams';
 
-describe.skip('AppController (e2e)', () => {
+describe('AppController (e2e)', () => {
   let connectionMongoDb: Connection;
   let app: INestApplication;
 
@@ -53,9 +53,14 @@ describe.skip('AppController (e2e)', () => {
     // init the app
     await app.init();
 
+    // TODO
     connectionMongoDb = moduleFixture
       .get<DatabaseService>(DatabaseService)
       .connectMongoDB();
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   // complete flow of user get create update delete
@@ -68,7 +73,7 @@ describe.skip('AppController (e2e)', () => {
     it(`GET > [] `, async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_USERS)
-        .set('Authorization', 'Bearer ' + tokenUserGeneral()) // ! using a temp token
+        .set('Authorization', 'Bearer ' + tokenUserGeneral())
         .expect(200)
         .then((res) => res.body);
 
@@ -218,12 +223,15 @@ describe.skip('AppController (e2e)', () => {
       token = req.access_token;
     });
 
+    // uses the to get the data of the just registered user
     it('GET > 200 and user data ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_AUTH)
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .then((res) => res.body);
+
+      console.log('req', req);
 
       expect.assertions(3);
 
@@ -234,7 +242,7 @@ describe.skip('AppController (e2e)', () => {
     });
 
     // the admin deletes the user
-    it('DELETE user with admin credentials > 200 and delete confirmation', async () => {
+    it.skip('DELETE user with admin credentials > 200 and delete confirmation', async () => {
       const req = await request(app.getHttpServer())
         .delete(PATH_USERS + `/${userTodelete}`) // the same as update
         .set('Authorization', 'Bearer ' + tokenUserGeneral()) // temp id
@@ -255,7 +263,7 @@ describe.skip('AppController (e2e)', () => {
   // one creates the jam for 4 players  in total and other 3 join
   // one arrives late and can't join
 
-  describe('Create users for the /jams test', () => {
+  describe.skip('Create users for the /jams test', () => {
     // players to create into array
     const arrayOfPlayers = [
       credentialBobDylan(),
@@ -307,7 +315,7 @@ describe.skip('AppController (e2e)', () => {
   // 8. Yoko Ono accidentaly tries to delete the jam but she CAN'T because she  is not the host
   // 9. It's late and Bod Dylan deletes the jam (he is the host)
 
-  describe('/jams - GET - POST - PUT - DELETE', () => {
+  describe.skip('/jams - GET - POST - PUT - DELETE', () => {
     // to have a simpler authorization some token
     const tokenJamHost = tokenBodDylan();
     // other players
@@ -656,9 +664,5 @@ describe.skip('AppController (e2e)', () => {
       expect(req).toContain('deleted');
       expect(req).toContain('the jam');
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

@@ -6,6 +6,7 @@ import {
   Request,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
 
 import { RequestUserDataDto, RequestUserToken } from '../dto/auth.dto';
@@ -46,7 +47,9 @@ export class AuthController {
   // route
   @UseGuards(JwtAuthGuard) // returns user email
   @Get()
-  public getUserData(@Request() req: RequestUserDataDto) {
+  public getUserData(@Request() req: RequestUserToken): Promise<object> {
+    //TODO
+    console.log('req', req);
     return this.authService.getUserData(req);
   }
 
