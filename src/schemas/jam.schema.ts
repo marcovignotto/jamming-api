@@ -1,31 +1,74 @@
-import * as mongoose from 'mongoose';
-import { Schema as MongooseSchema } from 'mongoose';
+/**
+ * @desc User Schema, ref to Jam
+ */
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
-export const JamSchema = new mongoose.Schema({
-  jamName: { type: String, required: true },
-  jamUrl: { type: String, required: true },
-  host: {
+import { User } from './user.schema';
+
+export type UserDocument = Jam & Document;
+
+@Schema()
+export class Jam {
+  @Prop({ type: String, required: true })
+  jamName: string;
+
+  @Prop({ type: String, required: true })
+  jamUrl: string;
+
+  @Prop({ type: String, required: true })
+  jamCode: string;
+
+  @Prop({ type: String, required: true })
+  kindOfMusic: string;
+
+  @Prop({ type: String, required: true })
+  playersLeft: string;
+
+  @Prop({ type: Number, required: true })
+  instrument: number;
+
+  @Prop({ type: Number, required: true })
+  totalNumberOfPlayers: number;
+
+  @Prop({ type: Array, required: true })
+  instruments: string[];
+
+  @Prop({ type: Array, required: true })
+  joinedInstruments: string[];
+
+  @Prop({ type: Array, required: true })
+  availableInstruments: string[];
+
+  @Prop({ type: Boolean, required: true, default: false })
+  started: boolean;
+
+  @Prop({ type: String, required: true, default: 'user' })
+  role: string;
+
+  @Prop({ type: Date, default: Date.now })
+  createdAt: string;
+
+  @Prop({ type: Date, default: Date.now })
+  startingDate: string;
+
+  // to populate the host
+  @Prop({
     type: MongooseSchema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: 'User',
-  },
-  joinedPlayers: [
+  })
+  host: User;
+
+  // to populate the players
+  @Prop([
     {
       type: MongooseSchema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: 'User',
     },
-  ],
-  jamCode: { type: String, required: true },
-  // array to have more instruments
-  instruments: { type: Array, required: true },
-  joinedInstruments: { type: Array, required: true },
-  availableInstruments: { type: Array, required: true },
-  totalNumberOfPlayers: { type: Number, required: true },
-  playersLeft: { type: Number, required: true },
-  started: { type: Boolean, required: true, default: false },
-  kindOfMusic: { type: String, required: true, default: 'user' },
-  startingDate: { type: Date, default: Date.now },
-  createdAt: { type: Date, default: Date.now },
-  // referenfe to give the current jam attended b the user
-});
+  ])
+  joinedPlayers: User[];
+}
+
+export const JamSchema = SchemaFactory.createForClass(Jam);
