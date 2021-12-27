@@ -25,7 +25,6 @@ import {
 import { jamOne } from './stubs/jams.stubs';
 
 import apiVersion from '../../config/apiVersion';
-import { DatabaseService } from '../database/database.service';
 
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
@@ -41,7 +40,6 @@ const PATH_AUTH = API_VERSION + '/auth';
 const PATH_JAMS = API_VERSION + '/jams';
 
 describe('AppController (e2e)', () => {
-  let connectionMongoDb: Connection;
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -53,11 +51,6 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     // init the app
     await app.init();
-
-    // TODO
-    // connectionMongoDb = moduleFixture
-    //   .get<DatabaseService>(DatabaseService)
-    //   .connectMongoDB();
   });
 
   afterAll(async () => {
@@ -217,12 +210,12 @@ describe('AppController (e2e)', () => {
       expect.assertions(1);
 
       // returned value
-
       expect(req.access_token).toBeTruthy();
 
       // save toke for next test
       token = req.access_token;
     });
+
     // uses the to get the data of the just registered user
     it('GET > 200 and user data ', async () => {
       const req = await request(app.getHttpServer())

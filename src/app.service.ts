@@ -14,13 +14,9 @@ export class AppService {
         console.log(
           `MongoDb Connected to the development DB ${process.env.MONGODB_URI}`,
         );
-      } else if (ENV === 'testing') {
-        console.log(
-          `MongoDb Connected to the test DB ${process.env.MONGODB_URI}`,
-        );
       } else {
         // log production db
-        console.log(`MongoDb Connected to ${process.env.MONGODB_URI}`);
+        console.log(`MongoDb Connected to the production Database`);
       }
     });
     this.connection.on('disconnected', () => {
@@ -29,13 +25,9 @@ export class AppService {
         console.log(
           `MongoDb Disconnected from development db: ${process.env.MONGODB_URI}`,
         );
-      } else if (ENV === 'testing') {
-        console.log(
-          `MongoDb Disconnected from testing db: ${process.env.MONGODB_URI}`,
-        );
       } else {
         // log production db
-        console.log(`MongoDb Disconnected from: ${process.env.MONGODB_URI}`);
+        console.log(`MongoDb Disconnected from the production Database`);
       }
     });
   }

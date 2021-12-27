@@ -32,10 +32,12 @@ const ENV = process.env.NODE_ENV;
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: '.env',
       // envFilePath: !ENV ? '.env' : `.env.${ENV}`,
       isGlobal: true,
       // load: [configEnvVars],
     }),
+    // TODO
     DatabaseModule,
     // MongooseModule.forRoot(process.env.MONGODB_URI),
     // TODO
@@ -43,13 +45,17 @@ const ENV = process.env.NODE_ENV;
     // MongooseModule.forRoot('mongodb://localhost/jamming'),
     // MongooseModule.forRootAsync({
     //   // imports: [ConfigModule],
-    //   useFactory: async () => ({
+    //   useFactory: async (configService: ConfigService) => ({
     //     // uri: configService.get<string>('MONGODB_URI'),
-    //     uri: process.env.MONGODB_URI,
+    //     // uri: process.env.MONGODB_URI,
     //     // uri: 'mongodb://localhost/jamming',
     //     // uri: 'mongodb://root:pass12345@mongodb',
+    //     uri:
+    //       configService.get<string>('NODE_ENV') === 'development'
+    //         ? configService.get<string>('MONGO_TEST_CONNECTION_URI')
+    //         : configService.get<string>('MONGO_PROD_CONNECTION_URI'),
     //   }),
-    //   // inject: [ConfigService],
+    //   inject: [ConfigService],
     // }),
     AuthModule,
     UsersModule,
@@ -59,7 +65,8 @@ const ENV = process.env.NODE_ENV;
     // AppController
   ],
   providers: [
-    // AppService,
+    ConfigService,
+    AppService,
     // protect all the routes
     {
       provide: APP_GUARD,

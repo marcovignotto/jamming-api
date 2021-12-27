@@ -46,7 +46,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
   // route
-  @UseGuards(JwtAuthGuard) // returns user email
+  // @UseGuards(JwtAuthGuard) // returns user email
   @Get()
   public getUserData(
     @Request() req: RequestUserToken | RequestUserDataDto,

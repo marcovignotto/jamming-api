@@ -56,7 +56,6 @@ export class JamsController {
   @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
   //route
-  @UseGuards(JwtAuthGuard) // needed to get user's email
   @Get()
   public getAllJams(
     @Query('all') all: boolean,
@@ -153,9 +152,9 @@ export class JamsController {
   @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
   // Route
-  @UseGuards(JwtAuthGuard) // needed to get user's email
   @Delete(':url')
   public deleteJam(@Param('url') url: string, @Request() req): Promise<string> {
+    // req.user is field by the guard that decodes the token and returns the email
     return this.jamsService.deleteJam(url, req.user);
   }
 }
