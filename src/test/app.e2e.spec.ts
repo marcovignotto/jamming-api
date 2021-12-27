@@ -220,7 +220,7 @@ describe('AppController (e2e)', () => {
     it('GET > 200 and user data ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_AUTH)
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', 'Bearer ' + tokenUserGeneral())
         .expect(200)
         .then((res) => res.body);
 

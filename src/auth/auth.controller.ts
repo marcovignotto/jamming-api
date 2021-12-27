@@ -46,11 +46,12 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
   // route
-  // @UseGuards(JwtAuthGuard) // returns user email
   @Get()
   public getUserData(
     @Request() req: RequestUserToken | RequestUserDataDto,
   ): Promise<object> {
+    // req.user is field by the guard that decodes the token and returns the email
+
     //TODO
     console.log(req);
     return this.authService.getUserData(req);

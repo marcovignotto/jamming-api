@@ -61,6 +61,7 @@ export class JamsController {
     @Query('all') all: boolean,
     @Request() req,
   ): Promise<Jam[]> {
+    // req.user is field by the guard that decodes the token and returns the email
     // forward query all and email
     // to return all the values or jsut the matching bassed on the user
 
@@ -122,9 +123,9 @@ export class JamsController {
   @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
   // Route
-  @UseGuards(JwtAuthGuard) // needed to get user's email
   @Put(':url')
   public updateJam(@Param('url') url: string, @Request() req): Promise<Jam> {
+    // req.user is field by the guard that decodes the token and returns the email
     // forward the url to the func
     return this.jamsService.updateJam(url, req.user);
   }

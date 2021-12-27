@@ -129,7 +129,6 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Invalid credentials!' })
 
   // route
-  @UseGuards(JwtAuthGuard) // needed to get user's email and check the owner or admin
   @Delete(':id')
   public deleteUser(@Param('id') id: string, @Request() req): Promise<string> {
     // forward user id and user data
