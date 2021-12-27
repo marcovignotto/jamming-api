@@ -3,7 +3,7 @@
 import {
   credentialUserAdmin,
   credentialUserGeneral,
-} from '../../test/stubs/users.stubs';
+} from '../../e2eTests/stubs/users.stubs';
 
 export const UsersService = jest.fn().mockReturnValue({
   getAllUsers: jest.fn().mockResolvedValue([credentialUserGeneral()]),

@@ -5,16 +5,14 @@ import slugify from 'slugify';
 
 // mongo
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
+import { Model } from 'mongoose';
 
 // models
 import { User } from '../schemas/user.schema';
-import { Jam, JamDocument } from '../schemas/jam.schema';
+import { Jam } from '../schemas/jam.schema';
 
 // interfaces
-import { IUser } from '../interfaces/user.interfaces';
-
-import { IJam, IUrlJam, IUrlReq } from '../interfaces/jam.interfaces';
+import { IUrlReq } from '../interfaces/jam.interfaces';
 
 @Injectable()
 export class JamsService {
@@ -118,6 +116,21 @@ export class JamsService {
 
     const savedJam = await jamToSave.save();
 
+    // before returning update the user model with the just created jam id
+
+    await this.userModel
+      .findOneAndUpdate(
+        { email: jamToCreate['hostEmail'] },
+        {
+          $set: {
+            // add the jamm to array
+            currentJam: savedJam._id,
+          },
+        },
+        { new: true },
+      )
+      .exec();
+
     return savedJam;
   }
   /**
@@ -142,9 +155,26 @@ export class JamsService {
       throw new HttpException(`User does not exist!`, 400);
     }
 
+    // various checks
+    if (jamToJoin.joinedPlayers.includes(userToJoin._id.toString())) {
+      throw new HttpException(`You already joined this Jam!`, 400);
+    }
+
+    // if the jam started refuse join
+    if (jamToJoin.started) {
+      throw new HttpException(`Sorry but is not possible to join the jam`, 400);
+    }
+
+    // check if the player's instrument is still avalilable
+    if (jamToJoin.joinedInstruments.includes(userToJoin.instrument)) {
+      throw new HttpException(
+        `Sorry but you can not join with your instrument!`,
+        400,
+      );
+    }
+    //
     // update fields of the jam
     // 5 steps
-
     const updateJam = await this.jamModel
       .findOneAndUpdate(
         { jamUrl: url },
@@ -172,6 +202,19 @@ export class JamsService {
       )
       .exec();
 
+    // before returning update the user model with the just created jam id
+    await this.userModel
+      .findOneAndUpdate(
+        { email: user.email },
+        {
+          $set: {
+            // add the jamm to array
+            currentJam: updateJam._id,
+          },
+        },
+      )
+      .exec();
+
     return updateJam;
   }
 
@@ -188,18 +231,35 @@ export class JamsService {
     // the requested jam
     const findJam = await this.jamModel.findOne({ jamUrl: url });
 
-    // check if the user is the jam's host
-    // compare the jam's host is with the user id
+    // error
+    if (!findJam) {
+      throw new HttpException(`Jam does not exists!`, 400);
+    }
     if (checkUserRequest[0]['_id'].toString() !== findJam.host.toString()) {
+      // check if the user is the jam's host
+      // compare the jam's host is with the user id
       throw new HttpException(
         `Invalid credentials for the requested operation!`,
         401,
       );
     }
 
+    // delete the currentJam fro mall the players
+    // take array of jam's players
+    for (let index = 0; index < findJam.joinedPlayers.length; index++) {
+      const idToFind = findJam.joinedPlayers[index].toString();
+
+      // loop and findByIdAndUpdate
+      await this.userModel.findByIdAndUpdate(idToFind, {
+        $set: { currentJam: null },
+      });
+    }
+
+    //delete jam
     const jamToDelete = await this.jamModel.findOneAndDelete({
       jamUrl: url,
     });
+
     // delete
     return `${checkUserRequest[0]['firstName']} ${checkUserRequest[0]['lastName']} deleted the jam ${jamToDelete['jamName']}`;
   }

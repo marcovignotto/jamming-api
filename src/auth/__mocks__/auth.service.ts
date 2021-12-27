@@ -3,7 +3,7 @@
 import {
   credentialUserGeneral,
   tokenUserGeneral,
-} from '../../test/stubs/users.stubs';
+} from '../../e2eTests/stubs/users.stubs';
 
 export const AuthService = jest.fn().mockReturnValue({
   getUserData: jest.fn().mockResolvedValue(credentialUserGeneral()),

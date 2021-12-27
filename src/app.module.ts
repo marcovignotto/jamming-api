@@ -1,73 +1,34 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-
-import configEnvVars from '../config/configuration';
 
 // imports
-import { AppController } from './app.controller';
+
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { JamsModule } from './jams/jams.module';
-
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { SetMetadata } from '@nestjs/common';
+
 import { DatabaseModule } from './database/database.module';
-
-// export const IS_PUBLIC_KEY = 'isPublic';
-// export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
-// env variables (development, production, testing)
-
-const getEnv = async () => {
-  return await process.env.NODE_ENV;
-};
-
-const ENV = process.env.NODE_ENV;
-// console.log('APP MODULE', ENV);
-//TODO
-// create a globconfig for the env
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
-      // envFilePath: !ENV ? '.env' : `.env.${ENV}`,
       isGlobal: true,
-      // load: [configEnvVars],
     }),
-    // TODO
-    DatabaseModule,
-    // MongooseModule.forRoot(process.env.MONGODB_URI),
-    // TODO
-    // ! Clean
-    // MongooseModule.forRoot('mongodb://localhost/jamming'),
-    // MongooseModule.forRootAsync({
-    //   // imports: [ConfigModule],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     // uri: configService.get<string>('MONGODB_URI'),
-    //     // uri: process.env.MONGODB_URI,
-    //     // uri: 'mongodb://localhost/jamming',
-    //     // uri: 'mongodb://root:pass12345@mongodb',
-    //     uri:
-    //       configService.get<string>('NODE_ENV') === 'development'
-    //         ? configService.get<string>('MONGO_TEST_CONNECTION_URI')
-    //         : configService.get<string>('MONGO_PROD_CONNECTION_URI'),
-    //   }),
-    //   inject: [ConfigService],
-    // }),
+    DatabaseModule, //DB connection
     AuthModule,
     UsersModule,
     JamsModule,
   ],
-  controllers: [
-    // AppController
-  ],
+  controllers: [AppController],
   providers: [
     ConfigService,
     AppService,
-    // protect all the routes
+    // protect ALL the routes
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

@@ -7,7 +7,6 @@ import {
   Body,
   Param,
   Query,
-  UseGuards,
   Request,
 } from '@nestjs/common';
 
@@ -22,10 +21,8 @@ import {
 
 import { JamsService } from './jams.service';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-
 // tdo
-import { CreateJamDto, UrlJamDto } from '../dto/jam.dto';
+import { CreateJamDto } from '../dto/jam.dto';
 
 import apiVersion from '../../config/apiVersion';
 
@@ -64,7 +61,6 @@ export class JamsController {
     // req.user is field by the guard that decodes the token and returns the email
     // forward query all and email
     // to return all the values or jsut the matching bassed on the user
-
     return this.jamsService.getAllJams(all, req.user);
   }
 
@@ -81,7 +77,7 @@ export class JamsController {
     type: CreateJamDto,
   })
   @ApiResponse({
-    type: CreateJamDto,
+    type: Jam,
     status: 200,
     description: 'Access to the route',
   })
@@ -99,11 +95,11 @@ export class JamsController {
    * @desc PUT route
    * @path /:url
    * @private admin / user (owner)
-   * @return updates jam
+   * @return updates/join a jam
    */
   // Docs
   @ApiTags('jams')
-  @ApiOperation({ summary: 'To update a jam' })
+  @ApiOperation({ summary: 'To join a jam' })
   @ApiParam({
     name: 'url indentifier',
     required: true,

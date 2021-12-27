@@ -12,7 +12,7 @@ export class AppService {
       // log development db
       if (ENV === 'development') {
         console.log(
-          `MongoDb Connected to the development DB ${process.env.MONGODB_URI}`,
+          `MongoDb Connected to the development DB ${process.env.MONGO_TEST_CONNECTION_URI}`,
         );
       } else {
         // log production db
@@ -23,7 +23,7 @@ export class AppService {
       // log development db
       if (ENV === 'development') {
         console.log(
-          `MongoDb Disconnected from development db: ${process.env.MONGODB_URI}`,
+          `MongoDb Disconnected from development db: ${process.env.MONGO_TEST_CONNECTION_URI}`,
         );
       } else {
         // log production db
@@ -33,6 +33,6 @@ export class AppService {
   }
 
   getHello(): string {
-    return 'Hello World!';
+    return 'Welcome to the *** jamming API ***. See how it works: <a href="http://localhost:5000/api-docs/">http://localhost:5000/api-docs/</a>';
   }
 }

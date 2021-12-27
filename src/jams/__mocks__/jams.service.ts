@@ -1,7 +1,7 @@
 // mock the jams service
 
-import { jamOne } from '../../test/stubs/jams.stubs';
-import { credentialUserGeneral } from '../../test/stubs/users.stubs';
+import { jamOne } from '../../e2eTests/stubs/jams.stubs';
+import { credentialUserGeneral } from '../../e2eTests/stubs/users.stubs';
 
 export const JamsService = jest.fn().mockReturnValue({
   getAllJams: jest.fn().mockResolvedValue([jamOne()]),

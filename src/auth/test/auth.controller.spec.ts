@@ -2,18 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../auth.controller';
 
 import { AuthService } from '../auth.service';
-import { User } from '../../schemas/user.schema';
 
-import {
-  tokenUserGeneral,
-  credentialUserGeneral,
-} from '../../test/stubs/users.stubs';
+import { credentialUserGeneral } from '../../e2eTests/stubs/users.stubs';
 
 // mock the service
 jest.mock('../auth.service.ts');
 
 // test objs
-const testToken = { access_token: tokenUserGeneral() };
 const testLogin = {
   email: credentialUserGeneral()['email'],
   password: credentialUserGeneral()['password'],
@@ -47,14 +42,22 @@ describe('AuthController', () => {
       let user: any;
 
       // call with the ctrl
-      // makes the request with a token
+      // just for the unit test makes the request
+      // with a user email instead of the token
       beforeEach(async () => {
-        user = await controller.getUserData(testToken);
+        user = await controller.getUserData({
+          user: {
+            email: credentialUserGeneral()['email'],
+          },
+        });
       });
 
       // check if it's called
+      // the service gets called with user email
       it('then it should call getUserData', () => {
-        expect(service.getUserData).toBeCalledWith(testToken);
+        expect(service.getUserData).toBeCalledWith({
+          email: credentialUserGeneral()['email'],
+        });
       });
 
       // check returned values

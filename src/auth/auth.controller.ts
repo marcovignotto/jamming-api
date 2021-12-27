@@ -1,20 +1,9 @@
-import {
-  Body,
-  Controller,
-  Post,
-  Get,
-  Request,
-  UseGuards,
-  Req,
-  Query,
-  Param,
-} from '@nestjs/common';
+import { Controller, Post, Get, Request, UseGuards } from '@nestjs/common';
 
 import { RequestUserDataDto, RequestUserToken } from '../dto/auth.dto';
 
 import { ApiBody, ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Public } from '../decorators/public.decorator';
 
@@ -47,14 +36,10 @@ export class AuthController {
 
   // route
   @Get()
-  public getUserData(
-    @Request() req: RequestUserToken | RequestUserDataDto,
-  ): Promise<object> {
-    // req.user is field by the guard that decodes the token and returns the email
-
-    //TODO
-    console.log(req);
-    return this.authService.getUserData(req);
+  async getUserData(@Request() req): Promise<object> {
+    // req.user is field by the guard that decodes the token
+    // and returns the email
+    return this.authService.getUserData(req.user);
   }
 
   /**

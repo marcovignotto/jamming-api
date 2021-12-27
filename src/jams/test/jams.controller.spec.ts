@@ -1,16 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongooseModule } from '@nestjs/mongoose';
 
-import { credentialUserGeneral } from '../../test/stubs/users.stubs';
-import { jamOne } from '../../test/stubs/jams.stubs';
+import { credentialUserGeneral } from '../../e2eTests/stubs/users.stubs';
+import { jamOne } from '../../e2eTests/stubs/jams.stubs';
 
 import { JamsController } from '../jams.controller';
 import { JamsService } from '../jams.service';
 
-import { User } from '../../schemas/user.schema';
 import { Jam } from '../../schemas/jam.schema';
-
-// import { DatabaseModule } from '../../database/database.module';
 
 // mock the service
 jest.mock('../jams.service.ts');
@@ -21,7 +17,7 @@ const testUser = {
   password: credentialUserGeneral()['password'],
 };
 
-describe.skip('JamsController', () => {
+describe('JamsController', () => {
   let controller: JamsController;
   let service: JamsService;
 

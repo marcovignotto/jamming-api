@@ -1,49 +1,17 @@
 import { Injectable, HttpException } from '@nestjs/common';
 
 import * as bcrypt from 'bcrypt';
-
 import * as crypto from 'crypto';
 
 // mongo
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
-
-// interfaces
-import {
-  CreateUserInterface,
-  PromiseCreateUserInterface,
-  IUser,
-} from '../interfaces/user.interfaces';
-
-// interfaces
-import { IUrlReq } from '../interfaces/jam.interfaces';
-
+import { Model } from 'mongoose';
 import { User, UserDocument } from 'src/schemas/user.schema';
 
-//TODO
-// external Interfaces
-export interface PostUserResponse {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  userCode: string;
-  instruments: string[];
-  role: string;
-}
+// interfaces
+import { CreateUserInterface } from '../interfaces/user.interfaces';
 
-export interface PostUserRequest {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  instruments: string[];
-  role: string;
-}
-
-export interface DeleteUserResponse {
-  deleteConfirmation: string;
-}
+import { IUrlReq } from '../interfaces/jam.interfaces';
 
 @Injectable()
 export class UsersService {
@@ -100,13 +68,7 @@ export class UsersService {
    * @returns obj with the updated user
    */
 
-  // TODO
-  public async updateUser(
-    id: string,
-    //     id: Schema.Types.ObjectId,
-    // obj: CreateUserInterface,
-    obj: User,
-  ): Promise<User> {
+  public async updateUser(id: string, obj: User): Promise<User> {
     // find and update using the mongo _id
     const userUpdated = await this.userModel.findOneAndUpdate(
       { _id: id },

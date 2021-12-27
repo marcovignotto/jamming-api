@@ -6,30 +6,18 @@ import {
   Delete,
   Body,
   Param,
-  UseGuards,
   Request,
 } from '@nestjs/common';
 
-import {
-  ApiBody,
-  ApiResponse,
-  ApiParam,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 // auth middleware
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Public } from '../decorators/public.decorator';
 
 import { UsersService } from './users.service';
 
 // DTOs
-import {
-  CreateUserDto,
-  PromiseCreateUserDto,
-  UpdateUserDto,
-} from '../dto/user.dto';
+import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
 
 import apiVersion from '../../config/apiVersion';
 import { User } from 'src/schemas/user.schema';

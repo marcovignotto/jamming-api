@@ -8,7 +8,7 @@ import { User } from '../../schemas/user.schema';
 import {
   credentialUserGeneral,
   credentialUserAdmin,
-} from '../../test/stubs/users.stubs';
+} from '../../e2eTests/stubs/users.stubs';
 
 // mock the service
 jest.mock('../users.service.ts');
@@ -33,7 +33,7 @@ const objUserUpdate = {
   role: credentialUserAdmin()['role'],
 };
 
-describe.skip('UsersController', () => {
+describe('UsersController', () => {
   // set controller and service
   let controller: UsersController;
   let service: UsersService;

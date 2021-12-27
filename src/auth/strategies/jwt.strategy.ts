@@ -1,3 +1,7 @@
+/**
+ * @desc strategy to validate a token and return user email
+ */
+
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
@@ -20,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: any): Promise<object> {
     return { userId: payload.sub, email: payload.email };
   }
 }

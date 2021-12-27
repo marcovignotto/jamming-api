@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-
 import { ApiExcludeController } from '@nestjs/swagger';
+
+import { Public } from './decorators/public.decorator';
 
 import { AppService } from './app.service';
 
@@ -15,8 +16,9 @@ const API_VERSION = apiVersion();
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Public()
   @Get()
-  getHello(): string {
+  public getHello(): string {
     return this.appService.getHello();
   }
 }

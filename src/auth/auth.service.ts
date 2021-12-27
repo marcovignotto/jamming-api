@@ -1,20 +1,11 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
 
 // mongo
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../schemas/user.schema';
-
-// interfaces
-import { IUser } from '../interfaces/user.interfaces';
-
-import {
-  IRequestToken,
-  IResponseRequestToken,
-} from '../interfaces/auth.interfaces';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +22,9 @@ export class AuthService {
    */
   public async getUserData(user): Promise<User> {
     // find user by email and return all info
-    const userFind = await this.userModel.findOne({ email: user.email });
+    const userFind = await this.userModel
+      .findOne({ email: user.email })
+      .populate('currentJam', 'jamName started -_id'); //;
 
     // return error if the user does not exist
     if (!user) {
@@ -50,7 +43,11 @@ export class AuthService {
    */
 
   async login(user: any): Promise<object> {
-    const payload = { email: user.email, sub: user.userId };
+    // create payload
+    const payload = {
+      email: user.user.email,
+    };
+
     return {
       access_token: this.jwtService.sign(payload),
     };
