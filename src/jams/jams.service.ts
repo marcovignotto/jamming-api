@@ -9,7 +9,7 @@ import { Model, Schema } from 'mongoose';
 
 // models
 import { User } from '../schemas/user.schema';
-import { Jam } from '../schemas/jam.schema';
+import { Jam, JamDocument } from '../schemas/jam.schema';
 
 // interfaces
 import { IUser } from '../interfaces/user.interfaces';
@@ -38,27 +38,27 @@ export class JamsService {
         .populate('host', 'firstName lastName instrument -_id') //
         .populate('joinedPlayers', 'firstName lastName instrument -_id');
       return allJams;
+    } else if (all === undefined) {
+      // find host
+      const findPlayer = await this.userModel.findOne({
+        email: user.email,
+      });
+
+      if (!findPlayer) {
+        throw new HttpException(`The user does not exists!`, 401);
+      }
+
+      // find al the jams to filter
+      const avaibleJams = await this.jamModel
+        .find({
+          availableInstruments: findPlayer.instrument,
+        })
+        // select just some fields
+        .populate('host', 'firstName lastName instrument -_id') //
+        .populate('joinedPlayers', 'firstName lastName instrument -_id');
+
+      return avaibleJams;
     }
-
-    // find host
-    const findPlayer = await this.userModel.findOne({
-      email: user.email,
-    });
-
-    if (!findPlayer) {
-      throw new HttpException(`The user does not exists!`, 401);
-    }
-
-    // find al the jams to filter
-    const avaibleJams = await this.jamModel
-      .find({
-        availableInstruments: findPlayer.instrument,
-      })
-      // select just some fields
-      .populate('host', 'firstName lastName instrument -_id') //
-      .populate('joinedPlayers', 'firstName lastName instrument -_id');
-
-    return avaibleJams;
   }
 
   /**
@@ -77,6 +77,7 @@ export class JamsService {
     const jamName = await this.jamModel.findOne({
       jamName: jamToCreate.jamName,
     });
+
     if (jamName) {
       throw new HttpException(`Jam name already exists`, 400);
     }
@@ -106,7 +107,7 @@ export class JamsService {
       instruments: [...jamToCreate.instruments, jamHost.instrument],
       joinedPlayers: [jamHost._id],
       // add host's instrument
-      joinedInstruments: jamHost.instrument,
+      joinedInstruments: [jamHost.instrument],
       // rest of the instruments
       availableInstruments: jamToCreate.instruments,
       // total - the host

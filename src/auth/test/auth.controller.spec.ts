@@ -44,9 +44,10 @@ describe('AuthController', () => {
   describe('getUserData', () => {
     describe('When getUserData is called', () => {
       // model
-      let user: User;
+      let user: any;
 
       // call with the ctrl
+      // makes the request with a token
       beforeEach(async () => {
         user = await controller.getUserData(testToken);
       });

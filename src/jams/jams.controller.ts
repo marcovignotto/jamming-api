@@ -62,9 +62,6 @@ export class JamsController {
     @Query('all') all: boolean,
     @Request() req,
   ): Promise<Jam[]> {
-    // TODO
-    console.log('this.getAllJams', req);
-
     // forward query all and email
     // to return all the values or jsut the matching bassed on the user
 

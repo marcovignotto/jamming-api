@@ -6,14 +6,14 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { User } from './user.schema';
 
-export type UserDocument = Jam & Document;
+export type JamDocument = Jam & Document;
 
 @Schema()
 export class Jam {
   @Prop({ type: String, required: true })
   jamName: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   jamUrl: string;
 
   @Prop({ type: String, required: true })
@@ -22,11 +22,8 @@ export class Jam {
   @Prop({ type: String, required: true })
   kindOfMusic: string;
 
-  @Prop({ type: String, required: true })
-  playersLeft: string;
-
   @Prop({ type: Number, required: true })
-  instrument: number;
+  playersLeft: number;
 
   @Prop({ type: Number, required: true })
   totalNumberOfPlayers: number;
@@ -42,9 +39,6 @@ export class Jam {
 
   @Prop({ type: Boolean, required: true, default: false })
   started: boolean;
-
-  @Prop({ type: String, required: true, default: 'user' })
-  role: string;
 
   @Prop({ type: Date, default: Date.now })
   createdAt: string;

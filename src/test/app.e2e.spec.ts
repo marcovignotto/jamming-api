@@ -22,6 +22,7 @@ import {
   tokenJoniMitchell,
   tokenYokoOno,
 } from './stubs/users.stubs';
+import { jamOne } from './stubs/jams.stubs';
 
 import apiVersion from '../../config/apiVersion';
 import { DatabaseService } from '../database/database.service';
@@ -54,9 +55,9 @@ describe('AppController (e2e)', () => {
     await app.init();
 
     // TODO
-    connectionMongoDb = moduleFixture
-      .get<DatabaseService>(DatabaseService)
-      .connectMongoDB();
+    // connectionMongoDb = moduleFixture
+    //   .get<DatabaseService>(DatabaseService)
+    //   .connectMongoDB();
   });
 
   afterAll(async () => {
@@ -222,16 +223,13 @@ describe('AppController (e2e)', () => {
       // save toke for next test
       token = req.access_token;
     });
-
     // uses the to get the data of the just registered user
     it('GET > 200 and user data ', async () => {
       const req = await request(app.getHttpServer())
         .get(PATH_AUTH)
-        .set('Authorization', 'Bearer ' + token)
+        .set('Authorization', `Bearer ${token}`)
         .expect(200)
         .then((res) => res.body);
-
-      console.log('req', req);
 
       expect.assertions(3);
 
@@ -242,10 +240,10 @@ describe('AppController (e2e)', () => {
     });
 
     // the admin deletes the user
-    it.skip('DELETE user with admin credentials > 200 and delete confirmation', async () => {
+    it('DELETE user with admin credentials > 200 and delete confirmation', async () => {
       const req = await request(app.getHttpServer())
         .delete(PATH_USERS + `/${userTodelete}`) // the same as update
-        .set('Authorization', 'Bearer ' + tokenUserGeneral()) // temp id
+        .set('Authorization', 'Bearer ' + tokenUserGeneral())
         .expect(200)
         .then((res) => res.text);
 
@@ -315,7 +313,7 @@ describe('AppController (e2e)', () => {
   // 8. Yoko Ono accidentaly tries to delete the jam but she CAN'T because she  is not the host
   // 9. It's late and Bod Dylan deletes the jam (he is the host)
 
-  describe.skip('/jams - GET - POST - PUT - DELETE', () => {
+  describe('/jams - GET - POST - PUT - DELETE', () => {
     // to have a simpler authorization some token
     const tokenJamHost = tokenBodDylan();
     // other players
@@ -325,13 +323,7 @@ describe('AppController (e2e)', () => {
     // the too late player
     const tokenJamPlayerFour = tokenYokoOno();
 
-    const testObjJamToCreate = {
-      jamName: 'Jamming with Mr Tamburine',
-      hostEmail: credentialBobDylan()['email'],
-      instruments: ['Guitar', 'Voice', 'Sax'],
-      totalNumberOfPlayers: 4,
-      kindOfMusic: 'Rock Folk Jazz ',
-    };
+    const testObjJamToCreate = jamOne();
 
     // just for testing the already converted url
     let jamToJoinUrl = 'jamming-with-mr-tamburine';
@@ -356,7 +348,13 @@ describe('AppController (e2e)', () => {
       const req = await request(app.getHttpServer())
         .post(PATH_JAMS)
         .set('Authorization', 'Bearer ' + tokenJamHost)
-        .send(testObjJamToCreate)
+        .send({
+          jamName: 'Jamming with Mr Tamburine',
+          hostEmail: 'bobdylan@gmail.com',
+          instruments: ['Guitar', 'Voice', 'Sax'],
+          totalNumberOfPlayers: 4,
+          kindOfMusic: 'Rock Folk Jazz',
+        })
         .expect(201)
         .then((res) => res.body);
 
@@ -482,10 +480,8 @@ describe('AppController (e2e)', () => {
 
       expect.assertions(1);
 
-      setTimeout(() => {
-        // use returned values
-        expect(Number(req.length)).toBe(0);
-      }, 500);
+      // use returned values
+      expect(req.length).toBe(0);
     });
 
     // Yoko Ono is stubborn and makes request with all=true

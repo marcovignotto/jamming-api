@@ -29,11 +29,9 @@ export class AuthService {
    * @desc to get the user data by a token
    * @returns the userdata
    */
-  async getUserData(user): Promise<User> {
+  public async getUserData(user): Promise<User> {
     // find user by email and return all info
     const userFind = await this.userModel.findOne({ email: user.email });
-    //TODO
-    // console.log('userFind', user);
 
     // return error if the user does not exist
     if (!user) {
