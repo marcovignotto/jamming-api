@@ -1,0 +1,1127 @@
+{
+	"info": {
+		"_postman_id": "a6e0d0d0-e5f5-42e9-8cfe-cf8385d1f194",
+		"name": "jamming",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Users",
+			"item": [
+				{
+					"name": "John Doe (general user test)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"email\": \"johndoe@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "John Doe (update general user test) - Needs /id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29tIiwiaWF0IjoxNjQwMDAwMDg0LCJleHAiOjE2NDUxODQwODR9.ARfooNQVGQIZ_E0SCYqwHQHbhYwBg57Lpeqzn7I1Aqc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"John The Second\",\r\n  \"lastName\": \"Doe The Great\",\r\n  \"email\": \"johndoe@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/61c9fd71b76d775cd6f5b672",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								"61c9fd71b76d775cd6f5b672"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bob Dylan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"Bob\",\r\n  \"lastName\": \"Dylan\",\r\n  \"email\": \"bobdylan@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Neil Young",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"Neil\",\r\n  \"lastName\": \"Young\",\r\n  \"email\": \"neilyoung@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Joni MItchell",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"Joni\",\r\n  \"lastName\": \"Mitchell\",\r\n  \"email\": \"jonimitchel@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "John Coltrane",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"John\",\r\n  \"lastName\": \"Coltrane\",\r\n  \"email\": \"johncoltrane@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Yoko Ono",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"Yoko\",\r\n  \"lastName\": \"Ono\",\r\n  \"email\": \"yokoono@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Users Data",
+			"item": [
+				{
+					"name": "get Bob Dylan data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvYmR5bGFuQGdtYWlsLmNvbSIsImlhdCI6MTY0MDYxODk0NiwiZXhwIjoxNjQ1ODAyOTQ2fQ.5NMQXtnVN63Keie2cvAHvI4vVqkTEUD2DG03I5XkN5o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Neil Young data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk4MDQsImV4cCI6MTY0NTEyMzgwNH0.XMSLqEMZa6HivlwnKpLWDb3tjsoY0a8-Kl4wqmigwLc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Joni Mitchell data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvbmltaXRjaGVsQGdtYWlsLmNvbSIsImlhdCI6MTYzOTkzOTc2MSwiZXhwIjoxNjQ1MTIzNzYxfQ.KKbnnAfq-W3C_sRtjItrw7qzAjlIAUpE7_eueg3mZII",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get John Coltrane data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5jb2x0cmFuZUBnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk2OTQsImV4cCI6MTY0NTEyMzY5NH0.6rvzpO6Pc7JWHi8L0lvDkhPbF_AtVmtYFGZ3s2aQe7I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Yoko Ono data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Jams",
+			"item": [
+				{
+					"name": "all the jams as Bob Dylan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5OTAxNTcsImV4cCI6MTY0NTE3NDE1N30.ZObAVbV5phsZd9X9-cVvTShQMHMdyC8TFjCxUbmkHL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the jams as Neil Young",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5OTAxNTcsImV4cCI6MTY0NTE3NDE1N30.ZObAVbV5phsZd9X9-cVvTShQMHMdyC8TFjCxUbmkHL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the jams as Joni Mitchell",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvbmltaXRjaGVsQGdtYWlsLmNvbSIsImlhdCI6MTYzOTkzOTc2MSwiZXhwIjoxNjQ1MTIzNzYxfQ.KKbnnAfq-W3C_sRtjItrw7qzAjlIAUpE7_eueg3mZII",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the jams as John Coltrane",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5jb2x0cmFuZUBnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk2OTQsImV4cCI6MTY0NTEyMzY5NH0.6rvzpO6Pc7JWHi8L0lvDkhPbF_AtVmtYFGZ3s2aQe7I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the jams as Yoko Ono",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the jams as Yoko Ono query all=true",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams?all=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Token",
+			"item": [
+				{
+					"name": "request token as Bob Dylan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"bobdylan@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as Neil Young",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"neilyoung@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as Joni Mitchell",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"jonimitchel@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as John Coltrane",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"johncoltrane@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as Yoko Ono",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"yokoono@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jam CRUD Flow",
+			"item": [
+				{
+					"name": "create a Jam as Bob Dylan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5OTAxNTcsImV4cCI6MTY0NTE3NDE1N30.ZObAVbV5phsZd9X9-cVvTShQMHMdyC8TFjCxUbmkHL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jamName\": \"Jamming with Mr Tamburine\",\r\n    \"hostEmail\": \"bobdylan@gmail.com\",\r\n    \"instruments\": [\"Guitar\", \"Voice\", \"Sax\"],\r\n    \"totalNumberOfPlayers\": 4,\r\n    \"kindOfMusic\": \"Rock Folk Jazz \"\r\n  }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join Jam as Joni Mitchell",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvbmltaXRjaGVsQGdtYWlsLmNvbSIsImlhdCI6MTYzOTkzOTc2MSwiZXhwIjoxNjQ1MTIzNzYxfQ.KKbnnAfq-W3C_sRtjItrw7qzAjlIAUpE7_eueg3mZII",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/jamming-with-mr-tamburine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								"jamming-with-mr-tamburine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the available jams as Yoko Ono with ?all=true - 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams?all=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join a full Jam as Yoko Ono > Error \"Can't join with...\"",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/jamming-with-mr-tamburine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								"jamming-with-mr-tamburine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join Jam as Neil Young",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk4MDQsImV4cCI6MTY0NTEyMzgwNH0.XMSLqEMZa6HivlwnKpLWDb3tjsoY0a8-Kl4wqmigwLc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/jamming-with-mr-tamburine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								"jamming-with-mr-tamburine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join Jam as Neil Young twice > Error \"You already...\"",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk4MDQsImV4cCI6MTY0NTEyMzgwNH0.XMSLqEMZa6HivlwnKpLWDb3tjsoY0a8-Kl4wqmigwLc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/jamming-with-mr-tamburine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								"jamming-with-mr-tamburine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join Jam as John Coltrane",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5jb2x0cmFuZUBnbWFpbC5jb20iLCJpYXQiOjE2Mzk5Mzk2OTQsImV4cCI6MTY0NTEyMzY5NH0.6rvzpO6Pc7JWHi8L0lvDkhPbF_AtVmtYFGZ3s2aQe7I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/jamming-with-mr-tamburine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								"jamming-with-mr-tamburine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the available jams as Yoko Ono",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all the available jams as Yoko Ono with ?all=true - 2",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams?all=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams"
+							],
+							"query": [
+								{
+									"key": "all",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Join a full Jam as Yoko Ono > Error - \"Sorry but is not possible...\"",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inlva29vbm9AZ21haWwuY29tIiwiaWF0IjoxNjM5OTM5ODQ1LCJleHAiOjE2NDUxMjM4NDV9.pI2Hwm35XJag003pHjQYPRP0vUoCESyxmg5Uym4Oopg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/jamming-with-mr-tamburine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								"jamming-with-mr-tamburine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Bob Dylan's Jam",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5OTAxNTcsImV4cCI6MTY0NTE3NDE1N30.ZObAVbV5phsZd9X9-cVvTShQMHMdyC8TFjCxUbmkHL4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jamName\": \"Jamming with Mr Tamburine\",\r\n    \"hostEmail\": \"bobdylan@gmail.com\",\r\n    \"instruments\": [\"Guitar\", \"Voice\", \"Sax\"],\r\n    \"totalNumberOfPlayers\": 4,\r\n    \"kindOfMusic\": \"Rock Folk Jazz \"\r\n  }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/jams/jamming-with-mr-tamburine",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"jams",
+								"jamming-with-mr-tamburine"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

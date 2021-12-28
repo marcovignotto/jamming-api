@@ -4,9 +4,13 @@
 
 The API satisfies all the user stories. I added the authentication (JWT token) and ownership: i.e. just the jam's host can delete the jam or a user can't delete another user unless is the admin.
 
+The _app_ can run locally or with **Docker**, a **Postman** collection is attached and is testeable with **Jest**.
+
+_Testing specs_ at the bottom of the README.
+
 ## Process
 
-I developed it in **TDD**, a bit of refactoring to optimize the code was made once everything was working correctly.
+The app is developed in **TDD**, a bit of refactoring to optimize the code was made once everything was working correctly.
 
 ## Technologies
 
@@ -40,7 +44,7 @@ http://localhost:5000/api-docs/
 
 # How To
 
-The app can run locally or with **Docker**.
+The _app_ can run locally or with **Docker**.
 
 ## Requirements
 
@@ -52,7 +56,7 @@ The app can run locally or with **Docker**.
 
 `npm i`
 
-From production to development changes the `db` alone
+From production to development changes the _db_ alone
 
 `npm run start` is mongodb://localhost/jamming
 
@@ -80,14 +84,14 @@ From inside dev is possible to run the tests.
 
 ## Postman
 
-I attached a **Postman** collection the requests have the same users/jams I used as stubs with **Jest**.
+`__postman___` contains a **Postman** collection, the requests have the same users/jams used as _stubs_ with **Jest**.
 With the collection is possible to perform all the CRUD operations of the app.
 
 ## Jest
 
-Every route contains its unit test and mock. All the tests are sharing the same stubs (users, jams).
+Every route contains its _unit test_ and _mocks_. All the tests are sharing the same _stubs_ (users, jams).
 
-**NOTE:** by default all the e2e tests are disabled.
+**NOTE:** by default all the **e2e tests** are disabled.
 
 `/e2eTests` contains all the **e2e tests**, `all.e2e.spec.ts` has all the tests.
 
