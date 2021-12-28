@@ -1,7 +1,16 @@
 /**
 * @desc all Jam's CRUD Flow
         the tests creates a full CRUD for the route /jams
-        need the 001 to use the users
+
+        IMPORTANT: it needs the 5 users on jams.users.spec.ts
+
+        1. GET - POST /jams
+        3. PUT - DELETE /jams
+
+        thr sets can be skipped to check it one by one 
+
+        IMPORTANT: if the CRUD is not complete (jam or users deleted) 
+        it throws errors, unless the db changed 
 */
 
 import { Test, TestingModule } from '@nestjs/testing';
@@ -30,8 +39,9 @@ const API_VERSION = apiVersion();
 
 const PATH_AUTH = API_VERSION + '/auth';
 const PATH_JAMS = API_VERSION + '/jams';
+const PATH_USERS = API_VERSION + '/users';
 
-describe.skip('/jams Flow 02', () => {
+describe.skip('/jams CRUD', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -57,7 +67,7 @@ describe.skip('/jams Flow 02', () => {
   // but the space is just for 3 users!
   // so one will not find her spot
 
-  // The main points of the sequence
+  // The main points of the sequence 1 & 2
   // 1. Bod Dylan creates the Jam (4 players, 3 spots available)
   // 2. Joni Mitchell requests and find an available spot for "Voice" (2 spots available)
   // 3. Yoko Ono requests and does not find cause "Voice" is gone
@@ -69,7 +79,7 @@ describe.skip('/jams Flow 02', () => {
   // 8. Yoko Ono accidentaly tries to delete the jam but she CAN'T because she is not the host
   // 9. It's late and Bod Dylan deletes the jam (he is the host)
 
-  describe('/jams - GET - POST - PUT - DELETE', () => {
+  describe('1. GET - POST', () => {
     // to have a simpler authorization some token
     const tokenJamHost = tokenBodDylan();
     // other players
@@ -402,6 +412,17 @@ describe.skip('/jams Flow 02', () => {
 
       expect(joinJam['started']).toBe(true);
     });
+  });
+
+  // 3. NEEDS the users
+  describe('2.  PUT - DELETE', () => {
+    // other players
+
+    // the too late player
+    const tokenJamPlayerFour = tokenYokoOno();
+
+    // just for testing the already converted url
+    let jamToJoinUrl = 'jamming-with-mr-tamburine';
 
     // now Yoko Ono makes request
     // but no jams are available

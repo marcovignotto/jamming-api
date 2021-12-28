@@ -20,7 +20,7 @@ describe('AppController', () => {
     appService = app.get<AppService>(AppService);
   });
 
-  describe('root', () => {
+  describe('getHello', () => {
     //
     let welcomeMsg;
 

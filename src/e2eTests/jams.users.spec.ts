@@ -1,7 +1,15 @@
 /**
- * @desc the test creates the 5 users for the jam CRUD flow
- *       db must be empty
- */
+* @desc all Jam's CRUD Flow
+        the tests creates a full CRUD for the route /jams
+
+        1. creates 5 users in /users 
+        2. deletes 5 users in /users (default skip)
+
+        thr sets can be skipped to check it one by one 
+
+        IMPORTANT if the CRUD is not complete (jam or users deleted) 
+        it throws errors, unless the db changed 
+*/
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
@@ -11,26 +19,28 @@ import { AppModule } from '../app.module';
 
 import {
   credentialBobDylan,
-  tokenBodDylan,
   credentialJohnColtrane,
-  tokenJohnColtrane,
   credentialJoniMitchell,
-  tokenJoniMitchell,
   credentialNeilYoung,
-  tokenNeilYoung,
   credentialYokoOno,
+  tokenBodDylan,
+  tokenNeilYoung,
+  tokenJohnColtrane,
+  tokenJoniMitchell,
   tokenYokoOno,
 } from './stubs/users.stubs';
+import { jamOne } from './stubs/jams.stubs';
 
 import apiVersion from '../../config/apiVersion';
 
 // take the API version i.e. /v1
 const API_VERSION = apiVersion();
 
-// paths
+const PATH_AUTH = API_VERSION + '/auth';
+const PATH_JAMS = API_VERSION + '/jams';
 const PATH_USERS = API_VERSION + '/users';
 
-describe('/jams FLOW 01', () => {
+describe.skip('/jams POST - DELETE users', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -50,9 +60,7 @@ describe('/jams FLOW 01', () => {
 
   // users to create for Jam CRUD test
   // db must be empty
-  // to create a jam we need a few users (players) with diffrerent instruments
-  // one creates the jam for 4 players  in total and other 3 join
-  // one arrives late and can't join
+  // to create a jam we need a few users (players) with different instruments
 
   // players to create into array
   const arrayOfPlayers = [
@@ -63,9 +71,12 @@ describe('/jams FLOW 01', () => {
     credentialYokoOno(),
   ];
 
+  // for the last part, user deletion
   let arrayOfIdsToDelete = [];
 
-  describe('Create users for the /jams test', () => {
+  // create the users
+
+  describe('1. Create 5 users', () => {
     // loop to create
     for (let i = 0; i < arrayOfPlayers.length; i++) {
       const player = arrayOfPlayers[i];
@@ -89,7 +100,9 @@ describe('/jams FLOW 01', () => {
     }
   });
 
-  describe('Delete users for the /jams test', () => {
+  // delete the users
+  // default skip
+  describe.skip('2. Delete 5 users', () => {
     // tokens to loop
     const arrayOfToken = [
       tokenBodDylan(),

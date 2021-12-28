@@ -1,73 +1,110 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Jamming API v 1.0
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## The challenge
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The API satisfies all the user stories. I added the authentication (JWT token) and ownership: i.e. just the jam's host can delete the jam or a user can't delete another user unless is the admin.
 
-## Description
+## Process
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+I developed it in **TDD**, a bit of refactoring to optimize the code was made once everything was working correctly.
 
-## Installation
+## Technologies
 
-```bash
-$ npm install
-```
+- Nest.js
+- MongoDb / Mongoose
+- Json Web Token
+- Jest
+- Swagger
 
-## Running the app
+# Specs
 
-```bash
-# development
-$ npm run start
+## Note
 
-# watch mode
-$ npm run start:dev
+_Just_ for this challenge all the `env` are included.
 
-# production mode
-$ npm run start:prod
-```
+## General
 
-## Test
+- port 5000
 
-```bash
-# unit tests
-$ npm run test
+## Routes
 
-# e2e tests
-$ npm run test:e2e
+`localhost:5000/v1/users`
 
-# test coverage
-$ npm run test:cov
-```
+`localhost:5000/v1/jams`
 
-## Support
+`localhost:5000/v1/auth`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Docs
 
-## Stay in touch
+http://localhost:5000/api-docs/
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# How To
 
-## License
+The app can run locally or with **Docker**.
 
-Nest is [MIT licensed](LICENSE).
+## Requirements
+
+- Node.js
+- MongoDb (local installation)
+- port 5000
+
+## Locally
+
+`npm i`
+
+From production to development changes the `db` alone
+
+`npm run start` is mongodb://localhost/jamming
+
+`npm run start:dev` is mongodb://localhost/jammingTest
+
+# Docker
+
+Docker has `dev` and `prod`
+
+### `dev`
+
+`dev` uses the **Docker Mongodb** accessible with **Mongo Express** on `:8081`
+
+`docker-compose -f docker-compose.yaml up dev mongodb mongo-express`
+
+From inside dev is possible to run the tests.
+
+### `prod`
+
+`prod` uses the local **MongoDb** of the running machine
+
+`docker-compose -f docker-compose.yaml up prod`
+
+# Testing
+
+## Postman
+
+I attached a **Postman** collection the requests have the same users/jams I used as stubs with **Jest**.
+With the collection is possible to perform all the CRUD operations of the app.
+
+## Jest
+
+Every route contains its unit test and mock. All the tests are sharing the same stubs (users, jams).
+
+**NOTE:** by default all the e2e tests are disabled.
+
+`/e2eTests` contains all the **e2e tests**, `all.e2e.spec.ts` has all the tests.
+
+Just for the challenge I divided the tests by route, every test is performing all the CRUD operations on the specific route.
+
+`jams.users.spec.ts` creates the users for `jams.crud.spec.ts` that peforms all the operations (its divided in 2 different parts)
+
+**NOTE:** by default `jams.users.spec.ts` does not delete the users
+
+### Example for a CRUD operation in `/jams`
+
+`npm run test:watch`
+
+remove skip from `jams.users.spec.ts`
+
+`jest` creates the 5 users
+
+remove skip from `jams.crud.spec.ts`
+
+`jest` will perfom a complete CRUD flow in `/jams`
