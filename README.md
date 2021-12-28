@@ -4,7 +4,7 @@
 
 The API satisfies all the user stories. I added the authentication (JWT token) and ownership: i.e. just the jam's host can delete the jam or a user can't delete another user unless is the admin.
 
-The _app_ can run locally or with **Docker**, a **Postman** collection is attached and is testeable with **Jest**.
+The _app_ can run locally or with **Docker**, a **Postman** collection is attached and is testable with **Jest**.
 
 _Testing specs_ at the bottom of the README.
 
@@ -95,9 +95,9 @@ Every route contains its _unit test_ and _mocks_. All the tests are sharing the 
 
 `/e2eTests` contains all the **e2e tests**, `all.e2e.spec.ts` has all the tests.
 
-Just for the challenge I divided the tests by route, every test is performing all the CRUD operations on the specific route.
+Just for the challenge, I divided the tests by route, every test is performing all the CRUD operations on the specific route.
 
-`jams.users.spec.ts` creates the users for `jams.crud.spec.ts` that peforms all the operations (its divided in 2 different parts)
+`jams.users.spec.ts` creates the users for `jams.crud.spec.ts` that performs all the operations (it's divided in 2 different parts)
 
 **NOTE:** by default `jams.users.spec.ts` does not delete the users
 
@@ -111,4 +111,4 @@ remove skip from `jams.users.spec.ts`
 
 remove skip from `jams.crud.spec.ts`
 
-`jest` will perfom a complete CRUD flow in `/jams`
+`jest` will perform a complete CRUD flow in `/jams`

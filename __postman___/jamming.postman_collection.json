@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "a6e0d0d0-e5f5-42e9-8cfe-cf8385d1f194",
-		"name": "jamming",
+		"name": "Jamming API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -93,7 +93,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"firstName\": \"Bob\",\r\n  \"lastName\": \"Dylan\",\r\n  \"email\": \"bobdylan@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+							"raw": "{ \"firstName\": \"Bob\",\r\n  \"lastName\": \"Dylan\",\r\n  \"email\": \"bobdylan@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Harmonica\",\r\n  \"role\": \"player\"}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/v1/users/",
@@ -124,7 +124,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"firstName\": \"Neil\",\r\n  \"lastName\": \"Young\",\r\n  \"email\": \"neilyoung@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+							"raw": "{ \"firstName\": \"Neil\",\r\n  \"lastName\": \"Young\",\r\n  \"email\": \"neilyoung@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Guitar\",\r\n  \"role\": \"player\"}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/v1/users/",
@@ -155,7 +155,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"firstName\": \"Joni\",\r\n  \"lastName\": \"Mitchell\",\r\n  \"email\": \"jonimitchel@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+							"raw": "{ \"firstName\": \"Joni\",\r\n  \"lastName\": \"Mitchell\",\r\n  \"email\": \"jonimitchel@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Voice\",\r\n  \"role\": \"player\"}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/v1/users/",
@@ -217,7 +217,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"firstName\": \"Yoko\",\r\n  \"lastName\": \"Ono\",\r\n  \"email\": \"yokoono@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+							"raw": "{ \"firstName\": \"Yoko\",\r\n  \"lastName\": \"Ono\",\r\n  \"email\": \"yokoono@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Voice\",\r\n  \"role\": \"player\"}"
 						},
 						"url": {
 							"raw": "http://localhost:5000/v1/users/",
@@ -230,6 +230,166 @@
 								"v1",
 								"users",
 								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Token",
+			"item": [
+				{
+					"name": "request token as Bob Dylan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"bobdylan@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as Neil Young",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"neilyoung@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as Joni Mitchell",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"jonimitchel@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as John Coltrane",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"johncoltrane@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request token as Yoko Ono",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"yokoono@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
 							]
 						}
 					},
@@ -408,7 +568,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5laWx5b3VuZ0BnbWFpbC5jb20iLCJpYXQiOjE2Mzk5OTAxNTcsImV4cCI6MTY0NTE3NDE1N30.ZObAVbV5phsZd9X9-cVvTShQMHMdyC8TFjCxUbmkHL4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvYmR5bGFuQGdtYWlsLmNvbSIsImlhdCI6MTY0MDcxMzE5NiwiZXhwIjoxNjQ1ODk3MTk2fQ.BpcDEUW0kDhp13Anqo0_nHXOcOTQ548jIYHXoDwzMlA",
 									"type": "string"
 								}
 							]
@@ -589,167 +749,7 @@
 			]
 		},
 		{
-			"name": "Get Token",
-			"item": [
-				{
-					"name": "request token as Bob Dylan",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \"email\": \"bobdylan@gmail.com\", \"password\": \"12345678\" }"
-						},
-						"url": {
-							"raw": "http://localhost:5000/v1/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"v1",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "request token as Neil Young",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \"email\": \"neilyoung@gmail.com\", \"password\": \"12345678\" }"
-						},
-						"url": {
-							"raw": "http://localhost:5000/v1/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"v1",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "request token as Joni Mitchell",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \"email\": \"jonimitchel@gmail.com\", \"password\": \"12345678\" }"
-						},
-						"url": {
-							"raw": "http://localhost:5000/v1/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"v1",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "request token as John Coltrane",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \"email\": \"johncoltrane@gmail.com\", \"password\": \"12345678\" }"
-						},
-						"url": {
-							"raw": "http://localhost:5000/v1/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"v1",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "request token as Yoko Ono",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \"email\": \"yokoono@gmail.com\", \"password\": \"12345678\" }"
-						},
-						"url": {
-							"raw": "http://localhost:5000/v1/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"v1",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Jam CRUD Flow",
+			"name": "Jam CRUD Flow (requires the 5 users)",
 			"item": [
 				{
 					"name": "create a Jam as Bob Dylan",
