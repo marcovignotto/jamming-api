@@ -101,6 +101,8 @@ Just for the challenge, I divided the tests by route, every test is performing a
 
 **NOTE:** by default `jams.users.spec.ts` does not delete the users
 
+The tests can be perfomed from **Docker dev**
+
 ### Example for a CRUD operation in `/jams`
 
 `npm run test:watch`
