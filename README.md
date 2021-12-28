@@ -68,17 +68,17 @@ Docker has `dev` and `prod`
 
 ### `dev`
 
-`dev` uses the **Docker Mongodb** accessible with **Mongo Express** on `:8081`
+`npm run docker:dev`
 
-`docker-compose -f docker-compose.yaml up dev mongodb mongo-express`
+uses the **_Docker_ Mongodb** accessible with **Mongo Express** on `:8081`
 
-From inside dev is possible to run the tests.
+From inside `dev` is possible to run the tests.
 
 ### `prod`
 
-`prod` uses the local **MongoDb** of the running machine
+`npm run docker:prod`
 
-`docker-compose -f docker-compose.yaml up prod`
+uses the local **MongoDb** of the running machine
 
 # Testing
 
