@@ -1,4 +1,4 @@
-# Jamming API v1.0
+# Jamming API v1.0 - Marco Vignotto
 
 ## The challenge
 
