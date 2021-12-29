@@ -9,7 +9,7 @@
 			"name": "Create Users",
 			"item": [
 				{
-					"name": "John Doe (general user test)",
+					"name": "John Doe (user test)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -40,14 +40,14 @@
 					"response": []
 				},
 				{
-					"name": "John Doe (update general user test) - Needs /id",
+					"name": "John Doe (update user test) - Needs the correct id",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29tIiwiaWF0IjoxNjQwMDAwMDg0LCJleHAiOjE2NDUxODQwODR9.ARfooNQVGQIZ_E0SCYqwHQHbhYwBg57Lpeqzn7I1Aqc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29tIiwiaWF0IjoxNjQwNzY3MzU3LCJleHAiOjE2NDU5NTEzNTd9.1Cc28_gehBLHbg1PGloWVPfiO99-NoaZDm01PlHXR1M",
 									"type": "string"
 								}
 							]
@@ -65,7 +65,7 @@
 							"raw": "{ \"firstName\": \"John The Second\",\r\n  \"lastName\": \"Doe The Great\",\r\n  \"email\": \"johndoe@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/v1/users/61c9fd71b76d775cd6f5b672",
+							"raw": "http://localhost:5000/v1/users/61cc1f58b09009d2d3fce6b4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -74,7 +74,48 @@
 							"path": [
 								"v1",
 								"users",
-								"61c9fd71b76d775cd6f5b672"
+								"61cc1f58b09009d2d3fce6b4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "John Doe (user test) - Needs the correct id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29tIiwiaWF0IjoxNjQwNzY3MzU3LCJleHAiOjE2NDU5NTEzNTd9.1Cc28_gehBLHbg1PGloWVPfiO99-NoaZDm01PlHXR1M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"firstName\": \"John The Second\",\r\n  \"lastName\": \"Doe The Great\",\r\n  \"email\": \"johndoe@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"instrument\": \"Sax\",\r\n  \"role\": \"player\"}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/users/61cc1f58b09009d2d3fce6b4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"users",
+								"61cc1f58b09009d2d3fce6b4"
 							]
 						}
 					},
@@ -240,6 +281,37 @@
 		{
 			"name": "Get Token",
 			"item": [
+				{
+					"name": "request token as John Doe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"bobdylan@gmail.com\", \"password\": \"12345678\" }"
+						},
+						"url": {
+							"raw": "http://localhost:5000/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "request token as Bob Dylan",
 					"request": {
