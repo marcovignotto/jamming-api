@@ -1,4 +1,4 @@
-# Jamming API v 1.0
+# Jamming API v1.0
 
 ## The challenge
 
@@ -58,9 +58,9 @@ The _app_ can run locally or with **Docker**.
 
 From production to development changes the _db_ alone
 
-`npm run start` is mongodb://localhost/jamming
+`npm run start` is `mongodb://localhost/jamming`
 
-`npm run start:dev` is mongodb://localhost/jammingTest
+`npm run start:dev` is `mongodb://localhost/jammingTest`
 
 # Docker
 
@@ -78,7 +78,7 @@ From inside `dev` is possible to run the tests.
 
 `npm run docker:prod`
 
-uses the local **MongoDb** of the running machine
+uses the local **MongoDb** of the running machine: `mongodb://localhost/jamming`
 
 # Testing
 
