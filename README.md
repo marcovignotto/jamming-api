@@ -2,7 +2,11 @@
 
 ## The challenge
 
-The API satisfies all the user stories. I added the authentication (JWT token) and ownership: i.e. just the jam's host can delete the jam or a user can't delete another user unless is the admin.
+Challenge made in a few hours to create a Jamming API whrere a user can host a jam session and other users (guests) can join.
+
+## Note
+
+_Just_ for testing purposes the `.env` file and credentials in **Docker** are attached. The app works just with local **MongoDb** and **Docker container**.
 
 The _app_ can run locally or with **Docker**, a **Postman** collection is attached and is testable with **Jest**.
 
@@ -21,10 +25,6 @@ The app is developed in **TDD**, a bit of refactoring to optimize the code was m
 - Swagger
 
 # Specs
-
-## Note
-
-_Just_ for this challenge all the `env` are included.
 
 ## General
 
